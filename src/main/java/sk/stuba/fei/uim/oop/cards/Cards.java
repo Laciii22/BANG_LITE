@@ -10,11 +10,6 @@ public abstract class Cards {
         this.color = color;
     }
 
-    protected void effect(Player fromPlayer){
-
-    }
-
-    protected void effect(Player fromPlayer, Player toPlayer) {
-
+    public void effect(){
     }
 }
