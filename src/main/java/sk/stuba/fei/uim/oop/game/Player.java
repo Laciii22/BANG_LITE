@@ -1,29 +1,34 @@
 package sk.stuba.fei.uim.oop.game;
+
 import sk.stuba.fei.uim.oop.cards.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private final String name;
     private int health;
     private ArrayList<Cards> hand;
-    private static List<Player> allPlayers = new ArrayList<>();
+    private List<Player> allPlayers;
+    private Deck deck;
 
-    public Player(String name, List<Cards> deck) {
-        this.hand = new ArrayList<Cards>(4);
+    public Player(String name, List<Cards> deck, List<Player> allPlayers, Deck gameDeck) {
+        this.hand = new ArrayList<>(4);
         this.name = name;
         this.health = 4;
         for (int i = 0; i < 4; i++) {
             Cards card = deck.remove(0);
             hand.add(card);
         }
+        this.allPlayers = allPlayers;
         allPlayers.add(this);
+        this.deck = gameDeck;
     }
 
-
-    public static List<Player> getAllPlayers() {
-        return allPlayers;
+    public Deck getDeck() {
+        return deck;
     }
+
 
     public String getPlayerInfo() {
         int serialNumber = 1;
@@ -57,16 +62,20 @@ public class Player {
         this.health -= 1;
     }
 
-    public boolean hasMissed(Player player) {
-        if (player.getHand().stream().anyMatch(card -> card instanceof Missed)) {
-            System.out.println("Player " + player.getName() + " has missed card");
-            return true;
-            ///now he has to throw away the missed card
-
-        } else {
-            return true;
-
+    public boolean hasMissed(Player player, Deck deck) {
+        for (int i = 0; i < player.getHand().size(); i++) {
+            if (player.getHand().get(i) instanceof Missed) {
+                System.out.println("Player " + player.getName() + " has missed card");
+                player.removeCard(player,i+1, deck);
+                return true;
+            }
         }
+        return false;
     }
 
+
+    public void removeCard(Player player, int index, Deck deck) {
+        Cards removedCard = this.hand.remove(index - 1);
+        deck.getDeck().add(deck.getDeck().size(), removedCard);
+    }
 }
