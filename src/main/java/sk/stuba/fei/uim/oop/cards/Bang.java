@@ -13,14 +13,15 @@ public class Bang extends Cards {
 
     @Override
     public void effect(Player sourcePlayer, ArrayList<Player> allPlayers) {
-        int index = ZKlavesnice.readInt("Select a player to target:") ;
+        int index = ZKlavesnice.readInt("Select a player to target:")-1;
         Player target = allPlayers.get(index);
-        if (target.hasMissed(sourcePlayer, target.getDeck())){
-            System.out.println(target.getName() + " has missed!");
-
+        if (target.hasMissed(target, target.getDeck())) {
+            System.out.println(target.getName() + " has a missed card and missed your bang!");
         } else {
-            target.recieveDamage(target);
             System.out.println(target.getName() + " has been hit!");
+            target.recieveDamage(target);
         }
     }
 }
+
+
