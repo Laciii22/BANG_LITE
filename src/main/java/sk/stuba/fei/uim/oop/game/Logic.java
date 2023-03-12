@@ -1,6 +1,8 @@
 package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.cards.Cards;
+import sk.stuba.fei.uim.oop.cards.Color;
+import sk.stuba.fei.uim.oop.cards.Jail;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
@@ -49,29 +51,74 @@ public class Logic {
         }
     }
 
+
     public void playerTurn() {
         Player currentPlayer = players.get(currentPlayerIndex);
-        currentPlayer.checkForWinner(players);
         currentPlayer.getCardFromDeck(currentPlayer, deck, 2);
         boolean continuePlaying = true;
         while (continuePlaying) {
             currentPlayer.printCurrentPlayer(currentPlayer);
+            if (currentPlayer.getCardsOnTable() != null) {
+                for (int n = 0; n < currentPlayer.getCardsOnTable().size(); n++) {
+                    Cards blueCard = currentPlayer.getCardsOnTable().get(n);
+                    if (blueCard.getColor() == Color.BLUE) {
+                        continuePlaying = playAgain();
+                        if (!continuePlaying) {
+                            discardCardsUntilFit(currentPlayer, deck);
+                            break;
+                        }
+                        int cardIndex = ZKlavesnice.readInt("Select a card to play: ");
+                        Cards card = currentPlayer.getHand().get(cardIndex - 1);
+                        handleBlueCard(currentPlayer, card, players, deck);
+                        currentPlayer.removeCard(currentPlayer, cardIndex, deck);
+                    }
+                }
+            }
+            if (!continuePlaying) {
+                discardCardsUntilFit(currentPlayer, deck);
+                break;
+            }
+            continuePlaying = playAgain();
+            if (!continuePlaying) {
+                discardCardsUntilFit(currentPlayer, deck);
+                break;
+            }
             int cardIndex = ZKlavesnice.readInt("Select a card to play: ");
             Cards card = currentPlayer.getHand().get(cardIndex - 1);
-            card.effect(currentPlayer, players);
+            if (card.getColor() == Color.BLUE) {
+                handleBlueCard(currentPlayer, card, players, deck);
+            } else {
+                card.effect(currentPlayer, players);
+            }
             currentPlayer.removeCard(currentPlayer, cardIndex, deck);
-            continuePlaying = playAgain();
-            if (!continuePlaying){
-                while(currentPlayer.getHand().size() > currentPlayer.getHealth()){
-                    currentPlayer.printCurrentPlayer(currentPlayer);
-                    cardIndex = ZKlavesnice.readInt("Select a card to discard: ");
-                    currentPlayer.removeCard(currentPlayer, cardIndex, deck);
-                }
+            if (!continuePlaying) {
+                discardCardsUntilFit(currentPlayer, deck);
+                break;
             }
         }
         currentPlayerIndex++;
         if (currentPlayerIndex >= players.size()) {
             currentPlayerIndex = 0;
+        }
+    }
+
+
+
+    public void discardCardsUntilFit(Player player, Deck deck) {
+        while (player.getHand().size() > player.getHealth()) {
+            player.printCurrentPlayer(player);
+            int cardIndex = ZKlavesnice.readInt("Select a card to discard: ");
+            player.removeCard(player, cardIndex, deck);
+        }
+    }
+
+    private void handleBlueCard(Player currentPlayer, Cards card, ArrayList<Player> players, Deck deck) {
+        if (card instanceof Jail) {
+            currentPlayer.printCurrentPlayer(currentPlayer);
+            Player target = currentPlayer.selectPlayer(currentPlayer, players);
+            target.addCardToTable(card);
+        } else {
+            currentPlayer.addCardToTable(card);
         }
     }
 

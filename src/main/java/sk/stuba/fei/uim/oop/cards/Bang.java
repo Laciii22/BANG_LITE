@@ -15,7 +15,9 @@ public class Bang extends Cards {
     @Override
     public void effect(Player sourcePlayer, ArrayList<Player> allPlayers) {
         Player target = sourcePlayer.selectPlayer(sourcePlayer, allPlayers);
-        if (target.hasMissed(target, target.getDeck())) {
+        if (target.hasBarrel(target, target.getDeck())){
+            System.out.println(target.getName() + " has a barrel and missed your bang!");
+        } else if (target.hasMissed(target, target.getDeck())) {
             System.out.println(target.getName() + " has a missed card and missed your bang!");
         } else {
             target.recieveDamage(target);
