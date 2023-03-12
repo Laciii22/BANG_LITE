@@ -5,6 +5,7 @@ import sk.stuba.fei.uim.oop.game.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Bang extends Cards {
     public Bang() {
@@ -13,15 +14,16 @@ public class Bang extends Cards {
 
     @Override
     public void effect(Player sourcePlayer, ArrayList<Player> allPlayers) {
-        int index = ZKlavesnice.readInt("Select a player to target:")-1;
-        Player target = allPlayers.get(index);
+        Player target = sourcePlayer.selectPlayer(sourcePlayer, allPlayers);
         if (target.hasMissed(target, target.getDeck())) {
             System.out.println(target.getName() + " has a missed card and missed your bang!");
         } else {
-            System.out.println(target.getName() + " has been hit!");
             target.recieveDamage(target);
+            if (target.isDead()) {
+                System.out.println(target.getName() + " is dead!");
+                allPlayers.remove(target);
+                sourcePlayer.checkForWinner(allPlayers);
+            }
         }
     }
 }
-
-

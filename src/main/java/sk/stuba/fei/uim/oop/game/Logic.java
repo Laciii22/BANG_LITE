@@ -51,6 +51,7 @@ public class Logic {
 
     public void playerTurn() {
         Player currentPlayer = players.get(currentPlayerIndex);
+        currentPlayer.checkForWinner(players);
         currentPlayer.getCardFromDeck(currentPlayer, deck, 2);
         boolean continuePlaying = true;
         while (continuePlaying) {
@@ -60,6 +61,13 @@ public class Logic {
             card.effect(currentPlayer, players);
             currentPlayer.removeCard(currentPlayer, cardIndex, deck);
             continuePlaying = playAgain();
+            if (!continuePlaying){
+                while(currentPlayer.getHand().size() > currentPlayer.getHealth()){
+                    currentPlayer.printCurrentPlayer(currentPlayer);
+                    cardIndex = ZKlavesnice.readInt("Select a card to discard: ");
+                    currentPlayer.removeCard(currentPlayer, cardIndex, deck);
+                }
+            }
         }
         currentPlayerIndex++;
         if (currentPlayerIndex >= players.size()) {
@@ -74,6 +82,7 @@ public class Logic {
         if (input.equalsIgnoreCase("y")) {
             return true;
         } else if (input.equalsIgnoreCase("n")) {
+
             return false;
         } else {
             System.out.println("Please enter y or n");

@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.cards.*;
+import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,16 @@ public class Player {
     private final String name;
     private int health;
     private ArrayList<Cards> hand;
+    private ArrayList<Cards> cardsOnTable;
     private Deck deck;
+
+
+    public void checkForWinner(ArrayList<Player> players) {
+        if (players.size() == 1) {
+            System.out.println("The winner is " + players.get(0).getName());
+            System.exit(0);
+        }
+    }
 
     public Deck getDeck() {
         return deck;
@@ -39,8 +49,14 @@ public class Player {
         System.out.println();
     }
 
+    public int getHealth() {
+        return health;
+    }
+
     public void recieveDamage(Player player) {
         this.health -= 1;
+        System.out.println(this.getName() + " has been hit!");
+        System.out.println("He has" + this.health);
     }
 
     public boolean hasMissed(Player player, Deck deck) {
@@ -67,5 +83,32 @@ public class Player {
 
     public boolean isDead() {
         return this.health <= 0;
+    }
+    public Player selectPlayer(Player sourcePlayer, ArrayList<Player> allPlayers) {
+        ArrayList<Player> playersToShoot = new ArrayList<>();
+        ArrayList<Integer> playerIndices = new ArrayList<>();
+        for (int i = 0; i < allPlayers.size(); i++) {
+            Player player = allPlayers.get(i);
+            if (!player.equals(sourcePlayer)) {
+                playersToShoot.add(player);
+                playerIndices.add(i);
+            }
+        }
+        for (int i = 0; i < playersToShoot.size(); i++) {
+            System.out.println((i + 1) + ". " + playersToShoot.get(i).getName());
+        }
+        int index = ZKlavesnice.readInt("Select a player to target:") - 1;
+        if (index >= 0 && index < playersToShoot.size()) {
+            return allPlayers.get(playerIndices.get(index));
+        } else {
+            System.out.println("Invalid selection!");
+            return selectPlayer(sourcePlayer, allPlayers);
+        }
+    }
+
+    public void recieveHealth(Player fromPlayer) {
+        this.health += 1;
+        System.out.println(this.getName() + " Drank a beer and now has more health!");
+        System.out.println("He has" + this.health);
     }
 }
