@@ -13,7 +13,7 @@ public class Indians extends Cards{
     public void effect(Player fromPlayer, ArrayList<Player> allPlayers) {
         for (Player player : allPlayers) {
             if (player != fromPlayer) {
-                player.recieveDamage(player);
+                player.recieveDamage(player, 1);
             }
         }
     }

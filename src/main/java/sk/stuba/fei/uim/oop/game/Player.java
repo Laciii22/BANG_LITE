@@ -69,8 +69,8 @@ public class Player {
         return health;
     }
 
-    public void recieveDamage(Player player) {
-        this.health -= 1;
+    public void recieveDamage(Player player, int damage) {
+        this.health -= damage;
         System.out.println(this.getName() + " has been hit!");
         System.out.println("He has" + this.health);
     }

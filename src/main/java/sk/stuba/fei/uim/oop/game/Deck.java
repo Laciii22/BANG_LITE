@@ -40,6 +40,10 @@ public class Deck {
         for (int i = 0; i < 30; i++){
             this.deck.add(new Bang());
         }
+        for (int i = 0; i < 15; i++){
+            this.deck.add(new Dynamite());
+
+        }
         Collections.shuffle(this.deck);
     }
 

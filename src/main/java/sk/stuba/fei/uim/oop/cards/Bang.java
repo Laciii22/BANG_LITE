@@ -20,7 +20,7 @@ public class Bang extends Cards {
         } else if (target.hasMissed(target, target.getDeck())) {
             System.out.println(target.getName() + " has a missed card and missed your bang!");
         } else {
-            target.recieveDamage(target);
+            target.recieveDamage(target, 1);
             if (target.isDead()) {
                 System.out.println(target.getName() + " is dead!");
                 allPlayers.remove(target);
