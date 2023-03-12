@@ -21,7 +21,7 @@ public class Deck {
             this.deck.add(new Barrel());
             this.deck.add(new Indians());
         }
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 3; i++){
             this.deck.add(new Jail());
         }
 

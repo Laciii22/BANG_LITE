@@ -8,10 +8,6 @@ public abstract class Cards {
     private Boolean available = true;
     private Color color;
 
-    public Color getColor() {
-        return color;
-    }
-
     public Cards(Color color) {
         this.color = color;
     }
