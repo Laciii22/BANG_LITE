@@ -12,6 +12,10 @@ public abstract class Cards {
         this.color = color;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
     public void effect(Player fromPlayer, ArrayList<Player> allPlayers) {
     }
 }

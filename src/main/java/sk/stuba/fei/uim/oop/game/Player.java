@@ -10,8 +10,9 @@ public class Player {
     private final String name;
     private int health;
     private ArrayList<Cards> hand;
-    private ArrayList<Cards> cardsOnTable;
+    private ArrayList<Cards> cardsOnTable = new ArrayList<>();
     private Deck deck;
+    private boolean jailed;
 
 
     public void checkForWinner(ArrayList<Player> players) {
@@ -49,6 +50,10 @@ public class Player {
         System.out.println();
     }
 
+    public ArrayList<Cards> getCardsOnTable() {
+        return cardsOnTable;
+    }
+
     public int getHealth() {
         return health;
     }
@@ -81,6 +86,10 @@ public class Player {
         deck.getDeck().add(deck.getDeck().size(), removedCard);
     }
 
+    public void removeCard(Player player, int index) {
+        Cards removedCard = this.hand.remove(index - 1);
+    }
+
     public boolean isDead() {
         return this.health <= 0;
     }
@@ -110,5 +119,17 @@ public class Player {
         this.health += 1;
         System.out.println(this.getName() + " Drank a beer and now has more health!");
         System.out.println("He has" + this.health);
+    }
+
+    public void addCardOnTable(Cards card) {
+        this.cardsOnTable.add(card);
+    }
+
+    public void setJailed(boolean b){
+        this.jailed = b;
+    }
+
+    public boolean isJailed(){
+        return this.jailed;
     }
 }

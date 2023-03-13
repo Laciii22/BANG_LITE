@@ -1,6 +1,9 @@
 package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.cards.Cards;
+import sk.stuba.fei.uim.oop.cards.Color;
+import sk.stuba.fei.uim.oop.cards.Dynamite;
+import sk.stuba.fei.uim.oop.cards.Jail;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
@@ -52,20 +55,38 @@ public class Logic {
     public void playerTurn() {
         Player currentPlayer = players.get(currentPlayerIndex);
         currentPlayer.checkForWinner(players);
+        playCardsOnTable(currentPlayer, players);
+        if (currentPlayer.isJailed()) {
+            currentPlayer.setJailed(false);
+            currentPlayerIndex++;
+            return;
+        }
         currentPlayer.getCardFromDeck(currentPlayer, deck, 2);
         boolean continuePlaying = true;
         while (continuePlaying) {
             currentPlayer.printCurrentPlayer(currentPlayer);
             int cardIndex = ZKlavesnice.readInt("Select a card to play: ");
             Cards card = currentPlayer.getHand().get(cardIndex - 1);
-            card.effect(currentPlayer, players);
-            currentPlayer.removeCard(currentPlayer, cardIndex, deck);
-            continuePlaying = playAgain();
-            if (!continuePlaying){
-                while(currentPlayer.getHand().size() > currentPlayer.getHealth()){
-                    currentPlayer.printCurrentPlayer(currentPlayer);
-                    cardIndex = ZKlavesnice.readInt("Select a card to discard: ");
-                    currentPlayer.removeCard(currentPlayer, cardIndex, deck);
+            if (card.getColor() == Color.BLUE) {
+                if (card instanceof Jail) {
+                    Player player = currentPlayer.selectPlayer(currentPlayer, players);
+                    currentPlayer.removeCard(currentPlayer, cardIndex);
+                    player.addCardOnTable(card);
+
+                } else {
+                    currentPlayer.addCardOnTable(card);
+                    currentPlayer.removeCard(currentPlayer, cardIndex);
+                }
+            } else if (card.getColor() != Color.BLUE) {
+                card.effect(currentPlayer, players);
+                currentPlayer.removeCard(currentPlayer, cardIndex, deck);
+                continuePlaying = playAgain();
+                if (!continuePlaying) {
+                    while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
+                        currentPlayer.printCurrentPlayer(currentPlayer);
+                        cardIndex = ZKlavesnice.readInt("Select a card to discard: ");
+                        currentPlayer.removeCard(currentPlayer, cardIndex, deck);
+                    }
                 }
             }
         }
@@ -74,6 +95,26 @@ public class Logic {
             currentPlayerIndex = 0;
         }
     }
+
+
+    public void playCardsOnTable(Player currentPlayer, ArrayList<Player> players) {
+        if (currentPlayer.getCardsOnTable() != null && currentPlayer.getCardsOnTable().size() > 0) {
+            for (int i = 0; i < currentPlayer.getCardsOnTable().size(); i++) {
+                if (currentPlayer.getCardsOnTable().get(i) instanceof Dynamite) {
+                    Cards dynamite = currentPlayer.getCardsOnTable().get(i);
+                    currentPlayer.getCardsOnTable().remove(i);
+                    currentPlayer.getCardsOnTable().add(0, dynamite);
+                }
+            }
+
+            for (int i = 0; i < currentPlayer.getCardsOnTable().size(); i++) {
+                currentPlayer.getCardsOnTable().get(i).effect(currentPlayer, players);
+            }
+        }
+    }
+
+
+
 
 
 

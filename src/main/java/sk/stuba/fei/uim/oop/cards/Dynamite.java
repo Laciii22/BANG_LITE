@@ -14,12 +14,21 @@ public class Dynamite extends Cards{
 
     @Override
     public void effect(Player fromPlayer, ArrayList<Player> allPlayers) {
-        //dynamite has 1/8 chance that it will explode and i want to use random and if it will explode it will remove 3 health from player
         Random random = new Random();
         int chance = random.nextInt(8);
         if (chance == 0) {
             fromPlayer.recieveDamage(fromPlayer, 3);
             System.out.println("Dynamite exploded and you lost 3 health");
+            if (fromPlayer.isDead()) {
+                System.out.println(fromPlayer.getName() + " is dead!");
+                ///remove all his cards
+                for (int i = 0; i < fromPlayer.getHand().size(); i++) {
+                    fromPlayer.removeCard(fromPlayer, i+1,  fromPlayer.getDeck());
+                }
+                for (int i = 0; i < fromPlayer.getCardsOnTable().size(); i++) {
+                    fromPlayer.removeCard(fromPlayer, i+1,  fromPlayer.getDeck());
+                }
+            }
         }
         else {
             System.out.println("Dynamite didn't explode");
