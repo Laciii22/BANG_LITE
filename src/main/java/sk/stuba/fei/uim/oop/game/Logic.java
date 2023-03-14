@@ -62,27 +62,27 @@ public class Logic {
         boolean continuePlaying = true;
         while (continuePlaying) {
             currentPlayer.printCurrentPlayer(currentPlayer);
-            int cardIndex = ZKlavesnice.readInt("Select a card to play: ");
-            Cards card = currentPlayer.getHand().get(cardIndex - 1);
+            int cardIndex = ZKlavesnice.readInt("Select a card to play: ")-1;
+            Cards card = currentPlayer.getHand().get(cardIndex );
             if (card.getColor() == Color.BLUE) {
                 if (card instanceof Jail) {
-                    Player player = currentPlayer.selectPlayer(currentPlayer, players);
+                    Player targetPlayer = currentPlayer.selectPlayer(currentPlayer, players);
                     currentPlayer.removeCard(currentPlayer, cardIndex);
-                    player.addCardOnTable(card);
+                    targetPlayer.getCardsOnTable().add(card);
+                    continuePlaying=playAgain();
 
                 } else {
                     currentPlayer.addCardOnTable(card);
                     currentPlayer.removeCard(currentPlayer, cardIndex);
-                    playAgain();
+                    continuePlaying=playAgain();
                 }
             } else if (card.getColor() != Color.BLUE) {
-                card.effect(currentPlayer, players);
-                currentPlayer.removeCard(currentPlayer, cardIndex, deck);
+                card.effect(currentPlayer, players, deck);
                 continuePlaying = playAgain();
                 if (!continuePlaying) {
                     while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
                         currentPlayer.printCurrentPlayer(currentPlayer);
-                        cardIndex = ZKlavesnice.readInt("Select a card to discard: ");
+                        cardIndex = ZKlavesnice.readInt("Select a card to discard: ")-1;
                         currentPlayer.removeCard(currentPlayer, cardIndex, deck);
                     }
                 }
@@ -106,9 +106,10 @@ public class Logic {
             }
             for (int i = 0; i < currentPlayer.getCardsOnTable().size(); i++) {
                 if (currentPlayer.getCardsOnTable().get(i) instanceof Barrel){
+
                 }
                 else{
-                currentPlayer.getCardsOnTable().get(i).effect(currentPlayer, players);
+                currentPlayer.getCardsOnTable().get(i).effect(currentPlayer, players, deck);
                 currentPlayer.removeCardFromTable(currentPlayer, i, deck);
                 }
             }

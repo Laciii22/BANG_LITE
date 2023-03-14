@@ -48,6 +48,12 @@ public class Player {
             System.out.print((i + 1) + ") " + currentPlayer.getHand().get(i).getClass().getSimpleName() + " ");
         }
         System.out.println();
+        if (currentPlayer.getCardsOnTable() != null) {
+            System.out.println("Cards on table: ");
+            for (int i = 0; i < currentPlayer.getCardsOnTable().size(); i++) {
+                System.out.println(currentPlayer.getCardsOnTable().get(i).getClass().getSimpleName());
+            }
+        }
     }
 
     public ArrayList<Cards> getCardsOnTable() {
@@ -67,7 +73,7 @@ public class Player {
     public boolean hasMissed(Player player, Deck deck) {
         for (int i = 0; i < player.getHand().size(); i++) {
             if (player.getHand().get(i) instanceof Missed) {
-                player.removeCard(player,i+1, deck);
+                player.removeCard(player,i, deck);
                 return true;
             }
         }
@@ -82,7 +88,7 @@ public class Player {
     }
 
     public void removeCard(Player player, int index, Deck deck) {
-        Cards removedCard = this.hand.remove(index - 1);
+        Cards removedCard = this.hand.remove(index);
         deck.getDeck().add(deck.getDeck().size(), removedCard);
     }
     public void removeCardFromTable(Player player, int index, Deck deck) {
@@ -91,7 +97,7 @@ public class Player {
     }
 
     public void removeCard(Player player, int index) {
-        Cards removedCard = this.hand.remove(index - 1);
+        Cards removedCard = this.hand.remove(index);
     }
 
     public boolean isDead() {
@@ -136,4 +142,7 @@ public class Player {
     public boolean isJailed(){
         return this.jailed;
     }
+
+
+
 }

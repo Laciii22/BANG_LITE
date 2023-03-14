@@ -1,11 +1,9 @@
 package sk.stuba.fei.uim.oop.cards;
 
-import sk.stuba.fei.uim.oop.game.Logic;
+import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
-import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Bang extends Cards {
     public Bang() {
@@ -13,7 +11,7 @@ public class Bang extends Cards {
     }
 
     @Override
-    public void effect(Player sourcePlayer, ArrayList<Player> allPlayers) {
+    public void effect(Player sourcePlayer, ArrayList<Player> allPlayers, Deck deck) {
         Player target = sourcePlayer.selectPlayer(sourcePlayer, allPlayers);
         if (target.hasMissed(target, target.getDeck())) {
             System.out.println(target.getName() + " has a missed card and missed your bang!");
@@ -25,5 +23,6 @@ public class Bang extends Cards {
                 sourcePlayer.checkForWinner(allPlayers);
             }
         }
+        sourcePlayer.removeCard(sourcePlayer, sourcePlayer.getHand().indexOf(this), deck);
     }
 }

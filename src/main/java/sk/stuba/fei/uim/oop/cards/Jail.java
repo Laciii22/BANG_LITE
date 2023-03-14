@@ -1,5 +1,6 @@
 package sk.stuba.fei.uim.oop.cards;
 
+import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
 
 import java.util.ArrayList;
@@ -11,17 +12,20 @@ public class Jail extends Cards{
     }
 
     @Override
-    public void effect(Player fromPlayer, ArrayList<Player> allPlayers) {
+    public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
         ///there is 1/8 chance that the player will be jailed
         Random random = new Random();
         int chance = random.nextInt(8);
         if (chance == 0) {
             System.out.println("You are jailed");
             fromPlayer.setJailed(true);
+            fromPlayer.removeCard(fromPlayer, fromPlayer.getCardsOnTable().indexOf(this), deck);
         }
         else {
             System.out.println("You are not jailed");
             fromPlayer.setJailed(false);
+            fromPlayer.removeCard(fromPlayer, fromPlayer.getCardsOnTable().indexOf(this), deck);
+
         }
     }
 }

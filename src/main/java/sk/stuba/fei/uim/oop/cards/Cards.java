@@ -1,5 +1,6 @@
 package sk.stuba.fei.uim.oop.cards;
 
+import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public abstract class Cards {
         return color;
     }
 
-    public void effect(Player fromPlayer, ArrayList<Player> allPlayers) {
+    public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
     }
 }
 
