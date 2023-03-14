@@ -1,9 +1,6 @@
 package sk.stuba.fei.uim.oop.game;
 
-import sk.stuba.fei.uim.oop.cards.Cards;
-import sk.stuba.fei.uim.oop.cards.Color;
-import sk.stuba.fei.uim.oop.cards.Dynamite;
-import sk.stuba.fei.uim.oop.cards.Jail;
+import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
@@ -76,6 +73,7 @@ public class Logic {
                 } else {
                     currentPlayer.addCardOnTable(card);
                     currentPlayer.removeCard(currentPlayer, cardIndex);
+                    playAgain();
                 }
             } else if (card.getColor() != Color.BLUE) {
                 card.effect(currentPlayer, players);
@@ -106,10 +104,15 @@ public class Logic {
                     currentPlayer.getCardsOnTable().add(0, dynamite);
                 }
             }
-
             for (int i = 0; i < currentPlayer.getCardsOnTable().size(); i++) {
+                if (currentPlayer.getCardsOnTable().get(i) instanceof Barrel){
+                }
+                else{
                 currentPlayer.getCardsOnTable().get(i).effect(currentPlayer, players);
+                currentPlayer.removeCardFromTable(currentPlayer, i, deck);
+                }
             }
+
         }
     }
 

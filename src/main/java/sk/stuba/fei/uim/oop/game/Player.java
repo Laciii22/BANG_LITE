@@ -85,6 +85,10 @@ public class Player {
         Cards removedCard = this.hand.remove(index - 1);
         deck.getDeck().add(deck.getDeck().size(), removedCard);
     }
+    public void removeCardFromTable(Player player, int index, Deck deck) {
+        Cards removedCard = this.cardsOnTable.remove(index );
+        deck.getDeck().add(deck.getDeck().size(), removedCard);
+    }
 
     public void removeCard(Player player, int index) {
         Cards removedCard = this.hand.remove(index - 1);
