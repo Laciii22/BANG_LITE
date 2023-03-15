@@ -13,6 +13,6 @@ public class Stagecoach extends Cards{
     @Override
     public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
         fromPlayer.getCardFromDeck(fromPlayer, fromPlayer.getDeck(), 2);
-        fromPlayer.removeCard(fromPlayer, fromPlayer.getHand().indexOf(this), deck);
+        fromPlayer.removeCard(fromPlayer.getHand().indexOf(this), deck);
     }
 }

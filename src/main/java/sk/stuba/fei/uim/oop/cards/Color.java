@@ -1,14 +1,9 @@
 package sk.stuba.fei.uim.oop.cards;
 
 public enum Color {
-    BROWN(0), BLUE(1);
-    private int value;
+    BROWN, BLUE;
 
-    Color(int value) {
-        this.value = value;
+    Color() {
     }
 
-    public int getValue() {
-        return this.value;
-    }
 }

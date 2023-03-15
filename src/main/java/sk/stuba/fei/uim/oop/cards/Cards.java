@@ -6,8 +6,7 @@ import sk.stuba.fei.uim.oop.game.Player;
 import java.util.ArrayList;
 
 public abstract class Cards {
-    private Boolean available = true;
-    private Color color;
+    private final Color color;
 
     public Cards(Color color) {
         this.color = color;

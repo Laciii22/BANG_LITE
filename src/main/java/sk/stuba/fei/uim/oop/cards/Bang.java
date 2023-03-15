@@ -5,7 +5,6 @@ import sk.stuba.fei.uim.oop.game.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Bang extends Cards {
     public Bang() {
@@ -28,8 +27,16 @@ public class Bang extends Cards {
         }
         else{
             System.out.println(target.getName() + " was shot by " + sourcePlayer.getName());
-            target.recieveDamage(target, 1);
+            if (target.isDead(allPlayers)) {
+                for (int i = 0; i < target.getHand().size(); i++) {
+                    target.removeCard(i, deck);
+                }
+                for (int i = 0; i < target.getCardsOnTable().size(); i++) {
+                    target.removeCard(i, deck);
+                }
+            }
+            target.recieveDamage(allPlayers, 1);
         }
-        sourcePlayer.removeCard(sourcePlayer, sourcePlayer.getHand().indexOf(this), deck);
+        sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);
     }
 }

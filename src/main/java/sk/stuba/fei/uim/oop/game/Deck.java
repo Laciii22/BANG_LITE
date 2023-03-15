@@ -3,12 +3,11 @@ package sk.stuba.fei.uim.oop.game;
 import sk.stuba.fei.uim.oop.cards.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-    private List<Cards> deck;
+    private final List<Cards> deck;
 
     public List<Cards> getDeck() {
         return deck;
@@ -40,16 +39,10 @@ public class Deck {
         for (int i = 0; i < 30; i++){
             this.deck.add(new Bang());
         }
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 1; i++){
             this.deck.add(new Dynamite());
 
         }
         Collections.shuffle(this.deck);
     }
-
-    public int getDeckSize(){
-        return deck.size();
-    }
-
-
 }

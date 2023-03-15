@@ -13,7 +13,7 @@ public class Beer extends Cards{
 
     @Override
     public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
-        fromPlayer.recieveHealth(fromPlayer);
-        fromPlayer.removeCard(fromPlayer, fromPlayer.getHand().indexOf(this), deck);
+        fromPlayer.recieveHealth();
+        fromPlayer.removeCard(fromPlayer.getHand().indexOf(this), deck);
     }
 }

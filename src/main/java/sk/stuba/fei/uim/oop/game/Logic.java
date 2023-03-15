@@ -25,7 +25,7 @@ public class Logic {
         ArrayList<Player> allPlayers = new ArrayList<>();
         for (int i = 0; i < numberPlayers; i++) {
             String name = ZKlavesnice.readString("Enter name of player " + (i + 1) + ": ");
-            Player player = new Player(name, deck.getDeck(), allPlayers, deck);
+            Player player = new Player(name, deck);
             allPlayers.add(player);
             players.add(player);
         }
@@ -59,41 +59,48 @@ public class Logic {
             return;
         }
         currentPlayer.getCardFromDeck(currentPlayer, deck, 2);
+
+        currentPlayer.printCurrentPlayer(currentPlayer);
+
         boolean continuePlaying = true;
-        while (continuePlaying) {
-            currentPlayer.printCurrentPlayer(currentPlayer);
-            int cardIndex = ZKlavesnice.readInt("Select a card to play: ")-1;
-            Cards card = currentPlayer.getHand().get(cardIndex );
+        do {
+            int cardIndex = ZKlavesnice.readInt("Select a card to play (0 to end turn): ") - 1;
+            if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
+                continuePlaying = false;
+                break;
+            }
+
+            Cards card = currentPlayer.getHand().get(cardIndex);
             if (card.getColor() == Color.BLUE) {
                 if (card instanceof Jail) {
                     Player targetPlayer = currentPlayer.selectPlayer(currentPlayer, players);
-                    currentPlayer.removeCard(currentPlayer, cardIndex);
+                    currentPlayer.removeCard(cardIndex);
                     targetPlayer.getCardsOnTable().add(card);
-                    continuePlaying=playAgain();
-
                 } else {
                     currentPlayer.addCardOnTable(card);
-                    currentPlayer.removeCard(currentPlayer, cardIndex);
-                    continuePlaying=playAgain();
+                    currentPlayer.removeCard(cardIndex);
                 }
             } else if (card.getColor() != Color.BLUE) {
                 card.effect(currentPlayer, players, deck);
-                continuePlaying = playAgain();
-                if (!continuePlaying) {
-                    while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
-                        currentPlayer.printCurrentPlayer(currentPlayer);
-                        ///
-                        cardIndex = ZKlavesnice.readInt("Select a card to discard: ")-1;
-                        currentPlayer.removeCard(currentPlayer, cardIndex, deck);
-                    }
-                }
             }
+
+            currentPlayer.printCurrentPlayer(currentPlayer);
+
+            continuePlaying = playAgain();
+        } while (continuePlaying);
+
+        while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
+            currentPlayer.printCurrentPlayer(currentPlayer);
+            int cardIndex = ZKlavesnice.readInt("Select a card to discard: ") - 1;
+            currentPlayer.removeCard(cardIndex, deck);
         }
+
         currentPlayerIndex++;
         if (currentPlayerIndex >= players.size()) {
             currentPlayerIndex = 0;
         }
     }
+
 
 
 

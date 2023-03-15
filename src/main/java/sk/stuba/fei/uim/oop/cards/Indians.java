@@ -19,10 +19,10 @@ public class Indians extends Cards{
                 }
                 else{
                     System.out.println("Player " + player.getName() + " was attacked by an indian");
-                    player.recieveDamage(player, 1);
+                    player.recieveDamage(allPlayers,1);
                 }
             }
         }
-        fromPlayer.removeCard(fromPlayer, fromPlayer.getHand().indexOf(this), deck);
+        fromPlayer.removeCard(fromPlayer.getHand().indexOf(this), deck);
     }
 }

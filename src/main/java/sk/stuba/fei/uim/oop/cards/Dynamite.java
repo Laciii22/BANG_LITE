@@ -18,14 +18,14 @@ public class Dynamite extends Cards {
         Random random = new Random();
         int chance = random.nextInt(8);
         if (chance == 0) {
-            fromPlayer.recieveDamage(fromPlayer, 3);
+            fromPlayer.recieveDamage(allPlayers,3);
             System.out.println("Dynamite exploded and you lost 3 health");
             if (fromPlayer.isDead(allPlayers)) {
                 for (int i = 0; i < fromPlayer.getHand().size(); i++) {
-                    fromPlayer.removeCard(fromPlayer, i , deck);
+                    fromPlayer.removeCard(i , deck);
                 }
                 for (int i = 0; i < fromPlayer.getCardsOnTable().size(); i++) {
-                    fromPlayer.removeCard(fromPlayer, i , deck);
+                    fromPlayer.removeCard(i , deck);
                 }
             }
         } else {
@@ -34,7 +34,7 @@ public class Dynamite extends Cards {
             int previousPlayerIndex = currentPlayerIndex == 0 ? allPlayers.size() - 1 : currentPlayerIndex - 1;
             Player previousPlayer = allPlayers.get(previousPlayerIndex);
             previousPlayer.getCardsOnTable().add(this);
-            fromPlayer.removeCardFromTable(fromPlayer, fromPlayer.getCardsOnTable().indexOf(this), deck);
+            fromPlayer.removeCardFromTable(fromPlayer.getCardsOnTable().indexOf(this), deck);
         }
     }
 }

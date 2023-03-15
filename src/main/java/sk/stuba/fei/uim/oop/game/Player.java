@@ -4,14 +4,14 @@ import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Player {
     private final String name;
     private int health;
-    private ArrayList<Cards> hand;
-    private ArrayList<Cards> cardsOnTable = new ArrayList<>();
-    private Deck deck;
+    private final ArrayList<Cards> hand;
+    private final ArrayList<Cards> cardsOnTable = new ArrayList<>();
+    private final Deck deck;
     private boolean jailed;
 
 
@@ -34,7 +34,7 @@ public class Player {
         return hand;
     }
 
-    public Player(String name, List<Cards> deck, ArrayList<Player> allPlayers, Deck gameDeck) {
+    public Player(String name, Deck gameDeck) {
         this.hand = new ArrayList<>(4);
         this.name = name;
         this.health = 4;
@@ -43,18 +43,28 @@ public class Player {
     }
 
     public void printCurrentPlayer(Player currentPlayer) {
-        System.out.print(currentPlayer.getName() + ": ");
+        printHand(currentPlayer);
+        printCardsOnTable(currentPlayer);
+    }
+
+    public void printHand(Player currentPlayer) {
+        System.out.print(currentPlayer.getName() + "'s hand: ");
         for (int i = 0; i < currentPlayer.getHand().size(); i++) {
             System.out.print((i + 1) + ") " + currentPlayer.getHand().get(i).getClass().getSimpleName() + " ");
         }
         System.out.println();
+    }
+
+    public void printCardsOnTable(Player currentPlayer) {
         if (currentPlayer.getCardsOnTable() != null) {
-            System.out.println("Cards on table: ");
+            System.out.print("Cards on table: ");
             for (int i = 0; i < currentPlayer.getCardsOnTable().size(); i++) {
-                System.out.println(currentPlayer.getCardsOnTable().get(i).getClass().getSimpleName());
+                System.out.print((i + 1) + ") " + currentPlayer.getCardsOnTable().get(i).getClass().getSimpleName()+ " ");
             }
         }
+        System.out.println();
     }
+
 
     public ArrayList<Cards> getCardsOnTable() {
         return cardsOnTable;
@@ -64,10 +74,10 @@ public class Player {
         return health;
     }
 
-    public void recieveDamage(Player player, int damage) {
+    public void recieveDamage(ArrayList<Player> allPlayers,int damage) {
         this.health -= damage;
-        System.out.println(this.getName() + " has been hit!");
-        System.out.println("He has" + this.health);
+        System.out.println("He has " + this.health + " HP");
+        isDead(allPlayers);
     }
     public boolean hasBarrel(Player player) {
         for (int i = 0; i < player.getCardsOnTable().size(); i++) {
@@ -81,7 +91,7 @@ public class Player {
     public boolean hasBang(Player player, Deck deck) {
         for (int i = 0; i < player.getHand().size(); i++) {
             if (player.getHand().get(i) instanceof Bang) {
-                player.removeCard(player,i, deck);
+                player.removeCard(i, deck);
                 return true;
             }
         }
@@ -91,7 +101,7 @@ public class Player {
     public boolean hasMissed(Player player, Deck deck) {
         for (int i = 0; i < player.getHand().size(); i++) {
             if (player.getHand().get(i) instanceof Missed) {
-                player.removeCard(player,i, deck);
+                player.removeCard(i, deck);
                 return true;
             }
         }
@@ -105,16 +115,16 @@ public class Player {
         }
     }
 
-    public void removeCard(Player player, int index, Deck deck) {
+    public void removeCard(int index, Deck deck) {
         Cards removedCard = this.hand.remove(index);
         deck.getDeck().add(deck.getDeck().size(), removedCard);
     }
-    public void removeCardFromTable(Player player, int index, Deck deck) {
+    public void removeCardFromTable(int index, Deck deck) {
         Cards removedCard = this.cardsOnTable.remove(index );
         deck.getDeck().add(deck.getDeck().size(), removedCard);
     }
 
-    public void removeCard(Player player, int index) {
+    public void removeCard(int index) {
         Cards removedCard = this.hand.remove(index);
     }
 
@@ -138,7 +148,9 @@ public class Player {
             }
         }
         for (int i = 0; i < playersToShoot.size(); i++) {
-            System.out.println((i + 1) + ". " + playersToShoot.get(i).getName());
+            System.out.print((i + 1) + ") " + playersToShoot.get(i).getName() + " " + playersToShoot.get(i).getHealth() + " HP ");
+            playersToShoot.get(i).printCardsOnTable(playersToShoot.get(i));
+
         }
         int index = ZKlavesnice.readInt("Select a player to target:") - 1;
         if (index >= 0 && index < playersToShoot.size()) {
@@ -149,10 +161,10 @@ public class Player {
         }
     }
 
-    public void recieveHealth(Player fromPlayer) {
+    public void recieveHealth() {
         this.health += 1;
         System.out.println(this.getName() + " Drank a beer and now has more health!");
-        System.out.println("He has" + this.health);
+        System.out.println("He has " + this.health + " HP");
     }
 
     public void addCardOnTable(Cards card) {
