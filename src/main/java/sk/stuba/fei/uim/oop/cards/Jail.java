@@ -19,12 +19,12 @@ public class Jail extends Cards{
         if (chance == 0) {
             System.out.println("You are jailed");
             fromPlayer.setJailed(true);
-            fromPlayer.removeCard(fromPlayer, fromPlayer.getCardsOnTable().indexOf(this), deck);
+            fromPlayer.removeCardFromTable(fromPlayer, fromPlayer.getCardsOnTable().indexOf(this), deck);
         }
         else {
             System.out.println("You are not jailed");
             fromPlayer.setJailed(false);
-            fromPlayer.removeCard(fromPlayer, fromPlayer.getCardsOnTable().indexOf(this), deck);
+            fromPlayer.removeCardFromTable(fromPlayer, fromPlayer.getCardsOnTable().indexOf(this), deck);
 
         }
     }

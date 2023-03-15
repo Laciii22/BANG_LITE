@@ -69,6 +69,24 @@ public class Player {
         System.out.println(this.getName() + " has been hit!");
         System.out.println("He has" + this.health);
     }
+    public boolean hasBarrel(Player player) {
+        for (int i = 0; i < player.getCardsOnTable().size(); i++) {
+            if (player.getHand().get(i) instanceof Barrel) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasBang(Player player, Deck deck) {
+        for (int i = 0; i < player.getHand().size(); i++) {
+            if (player.getHand().get(i) instanceof Bang) {
+                player.removeCard(player,i, deck);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean hasMissed(Player player, Deck deck) {
         for (int i = 0; i < player.getHand().size(); i++) {
@@ -100,8 +118,14 @@ public class Player {
         Cards removedCard = this.hand.remove(index);
     }
 
-    public boolean isDead() {
-        return this.health <= 0;
+    public boolean isDead( ArrayList<Player> players) {
+        if (this.health <= 0) {
+            System.out.println(this.getName() + " is dead!");
+            players.remove(this);
+            checkForWinner(players);
+            return true;
+        }
+        return false;
     }
     public Player selectPlayer(Player sourcePlayer, ArrayList<Player> allPlayers) {
         ArrayList<Player> playersToShoot = new ArrayList<>();

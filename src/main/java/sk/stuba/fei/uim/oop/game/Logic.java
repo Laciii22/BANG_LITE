@@ -38,7 +38,7 @@ public class Logic {
         currentPlayerIndex = 0;
         while (true) {
             Player currentPlayer = players.get(currentPlayerIndex);
-            if (currentPlayer.isDead()) {
+            if (currentPlayer.isDead(players)) {
                 currentPlayerIndex++;
                 continue;
             }
@@ -82,6 +82,7 @@ public class Logic {
                 if (!continuePlaying) {
                     while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
                         currentPlayer.printCurrentPlayer(currentPlayer);
+                        ///
                         cardIndex = ZKlavesnice.readInt("Select a card to discard: ")-1;
                         currentPlayer.removeCard(currentPlayer, cardIndex, deck);
                     }
@@ -93,6 +94,8 @@ public class Logic {
             currentPlayerIndex = 0;
         }
     }
+
+
 
 
     public void playCardsOnTable(Player currentPlayer, ArrayList<Player> players) {
@@ -110,7 +113,6 @@ public class Logic {
                 }
                 else{
                 currentPlayer.getCardsOnTable().get(i).effect(currentPlayer, players, deck);
-                currentPlayer.removeCardFromTable(currentPlayer, i, deck);
                 }
             }
 

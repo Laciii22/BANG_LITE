@@ -14,7 +14,13 @@ public class Indians extends Cards{
     public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
         for (Player player : allPlayers) {
             if (player != fromPlayer) {
-                player.recieveDamage(player, 1);
+                if (player.hasBang(player, deck)){
+                    System.out.println("Player " + player.getName() + " has bang card and he shot an indian");
+                }
+                else{
+                    System.out.println("Player " + player.getName() + " was attacked by an indian");
+                    player.recieveDamage(player, 1);
+                }
             }
         }
         fromPlayer.removeCard(fromPlayer, fromPlayer.getHand().indexOf(this), deck);
