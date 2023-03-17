@@ -16,9 +16,15 @@ public class Player {
 
 
     public void checkForWinner(ArrayList<Player> players) {
-        if (players.size() == 1) {
-            System.out.println("The winner is " + players.get(0).getName());
-            System.exit(0);
+        int activePlayers = 0;
+        for (int i = 0; i < players.size(); i++) {
+            if (isActive()) {
+                activePlayers++;
+            }
+        }
+        if (activePlayers == 1) {
+            System.out.println("The winner is " + this.name);
+            return;
         }
     }
 
@@ -81,7 +87,7 @@ public class Player {
     }
     public boolean hasBarrel(Player player) {
         for (int i = 0; i < player.getCardsOnTable().size(); i++) {
-            if (player.getHand().get(i) instanceof Barrel) {
+            if (player.getCardsOnTable().get(i) instanceof Barrel) {
                 return true;
             }
         }
@@ -128,10 +134,22 @@ public class Player {
         Cards removedCard = this.hand.remove(index);
     }
 
+    public void removeCardsFromDeadPlayer(Player player, Deck deck) {
+        for (int i = player.getHand().size() - 1; i >= 0; i--) {
+            player.removeCard(i, deck);
+        }
+        for (int i = player.getCardsOnTable().size() - 1; i >= 0; i--) {
+            player.removeCardFromTable(i, deck);
+        }
+    }
+    public boolean isActive() {
+        return health > 0;
+    }
+
     public boolean isDead( ArrayList<Player> players) {
         if (this.health <= 0) {
             System.out.println(this.getName() + " is dead!");
-            players.remove(this);
+            removeCardsFromDeadPlayer(this, this.getDeck());
             checkForWinner(players);
             return true;
         }
@@ -142,7 +160,7 @@ public class Player {
         ArrayList<Integer> playerIndices = new ArrayList<>();
         for (int i = 0; i < allPlayers.size(); i++) {
             Player player = allPlayers.get(i);
-            if (!player.equals(sourcePlayer)) {
+            if (!player.equals(sourcePlayer) && player.isActive()) {
                 playersToShoot.add(player);
                 playerIndices.add(i);
             }

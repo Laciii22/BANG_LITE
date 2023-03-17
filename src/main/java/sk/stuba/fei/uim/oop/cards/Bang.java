@@ -19,7 +19,11 @@ public class Bang extends Cards {
             int chance = random.nextInt(4);
             if (chance == 0) {
                 System.out.println(target.getName() + " has hidden behind a barrel and missed your bang!");
+                sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);
                 return;
+            }
+            else{
+                System.out.println(target.getName() + " couldn't hide behind a barrel");
             }
         }
         if (target.hasMissed(target , target.getDeck())){
@@ -27,14 +31,6 @@ public class Bang extends Cards {
         }
         else{
             System.out.println(target.getName() + " was shot by " + sourcePlayer.getName());
-            if (target.isDead(allPlayers)) {
-                for (int i = 0; i < target.getHand().size(); i++) {
-                    target.removeCard(i, deck);
-                }
-                for (int i = 0; i < target.getCardsOnTable().size(); i++) {
-                    target.removeCard(i, deck);
-                }
-            }
             target.recieveDamage(allPlayers, 1);
         }
         sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);

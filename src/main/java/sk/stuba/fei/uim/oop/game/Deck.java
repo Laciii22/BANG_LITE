@@ -20,7 +20,7 @@ public class Deck {
             this.deck.add(new Barrel());
             this.deck.add(new Indians());
         }
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 5; i++){
             this.deck.add(new Jail());
         }
 
@@ -39,7 +39,7 @@ public class Deck {
         for (int i = 0; i < 30; i++){
             this.deck.add(new Bang());
         }
-        for (int i = 0; i < 1; i++){
+        for (int i = 0; i < 5; i++){
             this.deck.add(new Dynamite());
 
         }

@@ -14,27 +14,23 @@ public class Dynamite extends Cards {
     }
 
     @Override
-    public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
+    public void effect(Player sourcePlayer, ArrayList<Player> allPlayers, Deck deck) {
         Random random = new Random();
         int chance = random.nextInt(8);
         if (chance == 0) {
-            fromPlayer.recieveDamage(allPlayers,3);
             System.out.println("Dynamite exploded and you lost 3 health");
-            if (fromPlayer.isDead(allPlayers)) {
-                for (int i = 0; i < fromPlayer.getHand().size(); i++) {
-                    fromPlayer.removeCard(i , deck);
-                }
-                for (int i = 0; i < fromPlayer.getCardsOnTable().size(); i++) {
-                    fromPlayer.removeCard(i , deck);
-                }
-            }
+            sourcePlayer.recieveDamage(allPlayers,3);
+            sourcePlayer.removeCard(sourcePlayer.getCardsOnTable().indexOf(this), deck);
+/*            if (sourcePlayer.isDead(allPlayers)) {
+                sourcePlayer.removeCardsFromDeadPlayer(sourcePlayer, deck);
+            }*/
         } else {
             System.out.println("Dynamite didn't explode");
-            int currentPlayerIndex = allPlayers.indexOf(fromPlayer);
+            int currentPlayerIndex = allPlayers.indexOf(sourcePlayer);
             int previousPlayerIndex = currentPlayerIndex == 0 ? allPlayers.size() - 1 : currentPlayerIndex - 1;
             Player previousPlayer = allPlayers.get(previousPlayerIndex);
             previousPlayer.getCardsOnTable().add(this);
-            fromPlayer.removeCardFromTable(fromPlayer.getCardsOnTable().indexOf(this), deck);
+            sourcePlayer.removeCardFromTable(sourcePlayer.getCardsOnTable().indexOf(this), deck);
         }
     }
 }

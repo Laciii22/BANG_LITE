@@ -21,6 +21,7 @@ public class CatBalou extends Cards {
             return;
         }
 
+
         String choice = ZKlavesnice.readString("Do you want to discard a card from " + target.getName() + "'s hand or table? (h/t): ");
 
         if (choice.equals("h")) {
@@ -39,9 +40,13 @@ public class CatBalou extends Cards {
                 return;
             }
             target.printCardsOnTable(target);
-            int index = ZKlavesnice.readInt("Enter the index of the card you want to discard: ")-1;
+            int index;
+            do {
+                index = ZKlavesnice.readInt("Enter the index of the card you want to discard: ") - 1;
+            } while (index < 0 || index >= target.getCardsOnTable().size());
             System.out.println("Discarding a card from " + target.getName() + "'s table: " + target.getCardsOnTable().get(index).getClass().getSimpleName());
             target.removeCardFromTable(index, deck);
+
         } else {
             System.out.println("Invalid choice, please enter 'h' or 't'.");
         }
