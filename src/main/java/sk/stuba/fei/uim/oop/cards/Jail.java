@@ -12,19 +12,19 @@ public class Jail extends Cards{
     }
 
     @Override
-    public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
+    public void effect(Player sourcePlayer, ArrayList<Player> allPlayers, Deck deck) {
         ///there is 1/8 chance that the player will be jailed
         Random random = new Random();
         int chance = random.nextInt(8);
         if (chance == 0) {
-            System.out.println("You are jailed");
-            fromPlayer.setJailed(true);
-            fromPlayer.removeCardFromTable(fromPlayer.getCardsOnTable().indexOf(this), deck);
+            System.out.println(sourcePlayer.getName() + " is jailed");
+            sourcePlayer.setJailed(true);
+            sourcePlayer.removeCardFromTable(sourcePlayer.getCardsOnTable().indexOf(this), deck);
         }
         else {
-            System.out.println("You are not jailed");
-            fromPlayer.setJailed(false);
-            fromPlayer.removeCardFromTable(fromPlayer.getCardsOnTable().indexOf(this), deck);
+            System.out.println(sourcePlayer.getName() + " is not jailed");
+            sourcePlayer.setJailed(false);
+            sourcePlayer.removeCardFromTable(sourcePlayer.getCardsOnTable().indexOf(this), deck);
 
         }
     }

@@ -19,8 +19,8 @@ public class Dynamite extends Cards {
         int chance = random.nextInt(8);
         if (chance == 0) {
             System.out.println("Dynamite exploded and you lost 3 health");
+            sourcePlayer.removeCardFromTable(sourcePlayer.getCardsOnTable().indexOf(this), deck);
             sourcePlayer.recieveDamage(allPlayers,3);
-            sourcePlayer.removeCard(sourcePlayer.getCardsOnTable().indexOf(this), deck);
 /*            if (sourcePlayer.isDead(allPlayers)) {
                 sourcePlayer.removeCardsFromDeadPlayer(sourcePlayer, deck);
             }*/
@@ -30,7 +30,7 @@ public class Dynamite extends Cards {
             int previousPlayerIndex = currentPlayerIndex == 0 ? allPlayers.size() - 1 : currentPlayerIndex - 1;
             Player previousPlayer = allPlayers.get(previousPlayerIndex);
             previousPlayer.getCardsOnTable().add(this);
-            sourcePlayer.removeCardFromTable(sourcePlayer.getCardsOnTable().indexOf(this), deck);
+            sourcePlayer.removeCardFromTable(sourcePlayer.getCardsOnTable().indexOf(this));
         }
     }
 }

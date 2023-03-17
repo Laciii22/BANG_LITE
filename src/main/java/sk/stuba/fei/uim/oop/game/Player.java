@@ -17,16 +17,18 @@ public class Player {
 
     public void checkForWinner(ArrayList<Player> players) {
         int activePlayers = 0;
-        for (int i = 0; i < players.size(); i++) {
-            if (isActive()) {
+        for (Player player : players) {
+            if (player.isActive()) {
                 activePlayers++;
             }
         }
         if (activePlayers == 1) {
-            System.out.println("The winner is " + this.name);
-            return;
+            System.out.println("The winner is " + this.name + "!");
+            System.out.println("Game over");
+            System.exit(0);
         }
     }
+
 
     public Deck getDeck() {
         return deck;
@@ -131,7 +133,11 @@ public class Player {
     }
 
     public void removeCard(int index) {
-        Cards removedCard = this.hand.remove(index);
+        this.hand.remove(index);
+    }
+
+    public void removeCardFromTable(int index) {
+        this.cardsOnTable.remove(index);
     }
 
     public void removeCardsFromDeadPlayer(Player player, Deck deck) {
