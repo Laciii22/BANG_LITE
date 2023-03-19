@@ -4,7 +4,7 @@ import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class CatBalou extends Cards {
@@ -13,17 +13,14 @@ public class CatBalou extends Cards {
     }
 
     @Override
-    public void effect(Player sourcePlayer, ArrayList<Player> allPlayers, Deck deck) {
+    public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
         Player target = sourcePlayer.selectPlayer(sourcePlayer, allPlayers);
         if (target.getHand().isEmpty() && target.getCardsOnTable().isEmpty()) {
             System.out.println("Cannot play Cat Balou on " + target.getName() + " as they have no cards on hand or table.");
             effect(sourcePlayer, allPlayers, deck);
             return;
         }
-
-
         String choice = ZKlavesnice.readString("Do you want to discard a card from " + target.getName() + "'s hand or table? (h/t): ");
-
         if (choice.equals("h")) {
             if (target.getHand().isEmpty()) {
                 System.out.println(target.getName() + " has no cards on hand to discard.");

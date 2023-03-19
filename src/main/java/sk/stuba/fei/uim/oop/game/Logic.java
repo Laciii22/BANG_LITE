@@ -4,12 +4,11 @@ import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
 public class Logic {
-    private final ArrayList<Player> players;
+    private final List<Player> players;
     private final Deck deck;
     private int currentPlayerIndex;
 
@@ -24,18 +23,16 @@ public class Logic {
         }
         this.players = new ArrayList<>(numberPlayers);
         this.deck = new Deck();
-        ArrayList<Player> allPlayers = new ArrayList<>();
         for (int i = 0; i < numberPlayers; i++) {
             String name = ZKlavesnice.readString("Enter name of player " + (i + 1) + ": ");
             Player player = new Player(name, deck);
-            allPlayers.add(player);
             players.add(player);
         }
         startGame();
     }
 
 
-    public void startGame() {
+    private void startGame() {
         System.out.println("\nThe game has started!");
         currentPlayerIndex = 0;
         while (true) {
@@ -51,7 +48,7 @@ public class Logic {
         }
     }
 
-    public void playerTurn() {
+    private void playerTurn() {
         Player currentPlayer = players.get(currentPlayerIndex);
         currentPlayer.checkForWinner(players);
         playCardsOnTable(currentPlayer, players);
@@ -88,13 +85,13 @@ public class Logic {
             if (continuePlaying) {
                 Cards card = currentPlayer.getHand().get(cardIndex);
                 if (card.getColor() == Color.BLUE) {
-                    if (!canPlayBlueCard(currentPlayer, card)) {
+                    if (canPlayBlueCard(currentPlayer, card)) {
                         System.out.println("You can't play this card. You already have this card on the table.");
                         continue;
                     }
                     if (card instanceof Jail) {
                         Player targetPlayer = currentPlayer.selectPlayer(currentPlayer, players);
-                        if (!canPlayBlueCard(targetPlayer, card)) {
+                        if (canPlayBlueCard(targetPlayer, card)) {
                             System.out.println("You can't play this card on this player. He already has a Jail card on the table.");
                             continue;
                         }
@@ -135,13 +132,13 @@ public class Logic {
     private boolean canPlayBlueCard(Player player, Cards card) {
         for (Cards tableCard : player.getCardsOnTable()) {
             if (tableCard.getClass() == card.getClass()) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    public List<Cards> getCardsOnTableInOrder(Player currentPlayer) {
+    private List<Cards> getCardsOnTableInOrder(Player currentPlayer) {
         List<Cards> cardsToAdd = new ArrayList<>();
         for (Cards card : currentPlayer.getCardsOnTable()) {
             if (card instanceof Dynamite) {
@@ -153,20 +150,16 @@ public class Logic {
         return cardsToAdd;
     }
 
-    public void playCardsOnTable(Player currentPlayer, ArrayList<Player> players) {
+    private void playCardsOnTable(Player currentPlayer, List<Player> players) {
         List<Cards> cardsOnTableInOrder = getCardsOnTableInOrder(currentPlayer);
         for (Cards card : cardsOnTableInOrder) {
-            if (card instanceof Barrel) {
-                //Barel has  no effect in this phase
-            } else {
+            if (!(card instanceof Barrel)) {
                 card.effect(currentPlayer, players, deck);
             }
         }
     }
 
-
-
-    public boolean playAgain() {
+    private boolean playAgain() {
         String input = ZKlavesnice.readString("Do you want to play in this turn? (y/n) ");
         if (input.equalsIgnoreCase("y")) {
             return true;

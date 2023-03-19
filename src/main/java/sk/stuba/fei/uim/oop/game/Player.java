@@ -4,18 +4,19 @@ import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Player {
     private final String name;
     private int health;
-    private final ArrayList<Cards> hand;
-    private final ArrayList<Cards> cardsOnTable = new ArrayList<>();
+    private final List<Cards> hand;
+    private final List<Cards> cardsOnTable = new ArrayList<>();
     private final Deck deck;
     private boolean jailed;
 
 
-    public void checkForWinner(ArrayList<Player> players) {
+    protected void checkForWinner(List<Player> players) {
         int activePlayers = 0;
         for (Player player : players) {
             if (player.isActive()) {
@@ -33,16 +34,15 @@ public class Player {
     public Deck getDeck() {
         return deck;
     }
-
     public String getName() {
         return this.name;
     }
 
-    public ArrayList<Cards> getHand() {
+    public List<Cards> getHand() {
         return hand;
     }
 
-    public Player(String name, Deck gameDeck) {
+    protected Player(String name, Deck gameDeck) {
         this.hand = new ArrayList<>(4);
         this.name = name;
         this.health = 4;
@@ -50,12 +50,12 @@ public class Player {
         getCardFromDeck(Player.this, gameDeck, 4);
     }
 
-    public void printCurrentPlayer(Player currentPlayer) {
+    protected void printCurrentPlayer(Player currentPlayer) {
         printHand(currentPlayer);
         printCardsOnTable(currentPlayer);
     }
 
-    public void printHand(Player currentPlayer) {
+    private void printHand(Player currentPlayer) {
         System.out.print(currentPlayer.getName() + "'s hand: ");
         for (int i = 0; i < currentPlayer.getHand().size(); i++) {
             System.out.print((i + 1) + ") " + currentPlayer.getHand().get(i).getClass().getSimpleName() + " ");
@@ -74,15 +74,15 @@ public class Player {
     }
 
 
-    public ArrayList<Cards> getCardsOnTable() {
+    public List<Cards> getCardsOnTable() {
         return cardsOnTable;
     }
 
-    public int getHealth() {
+    protected int getHealth() {
         return health;
     }
 
-    public void recieveDamage(ArrayList<Player> allPlayers,int damage) {
+    public void recieveDamage(List<Player> allPlayers,int damage) {
         this.health -= damage;
         System.out.println("He has " + this.health + " HP");
         isDead(allPlayers);
@@ -123,15 +123,6 @@ public class Player {
         }
     }
 
-    public void removeCard(int index, Deck deck) {
-        Cards removedCard = this.hand.remove(index);
-        deck.getDeck().add(deck.getDeck().size(), removedCard);
-    }
-    public void removeCardFromTable(int index, Deck deck) {
-        Cards removedCard = this.cardsOnTable.remove(index );
-        deck.getDeck().add(deck.getDeck().size(), removedCard);
-    }
-
     public void removeCard(int index) {
         this.hand.remove(index);
     }
@@ -140,7 +131,17 @@ public class Player {
         this.cardsOnTable.remove(index);
     }
 
-    public void removeCardsFromDeadPlayer(Player player, Deck deck) {
+    public void removeCard(int index, Deck deck) {
+        Cards removedCard = this.hand.remove(index);
+        deck.getDeck().add(deck.getDeck().size(), removedCard);
+    }
+
+    public void removeCardFromTable(int index, Deck deck) {
+        Cards removedCard = this.cardsOnTable.remove(index );
+        deck.getDeck().add(deck.getDeck().size(), removedCard);
+    }
+
+    private void removeCardsFromDeadPlayer(Player player, Deck deck) {
         for (int i = player.getHand().size() - 1; i >= 0; i--) {
             player.removeCard(i, deck);
         }
@@ -152,7 +153,7 @@ public class Player {
         return health > 0;
     }
 
-    public boolean isDead( ArrayList<Player> players) {
+    protected boolean isDead( List<Player> players) {
         if (this.health <= 0) {
             System.out.println(this.getName() + " is dead!");
             removeCardsFromDeadPlayer(this, this.getDeck());
@@ -161,7 +162,7 @@ public class Player {
         }
         return false;
     }
-    public Player selectPlayer(Player sourcePlayer, ArrayList<Player> allPlayers) {
+    public Player selectPlayer(Player sourcePlayer, List<Player> allPlayers) {
         ArrayList<Player> playersToShoot = new ArrayList<>();
         ArrayList<Integer> playerIndices = new ArrayList<>();
         for (int i = 0; i < allPlayers.size(); i++) {
@@ -191,7 +192,7 @@ public class Player {
         System.out.println("He has " + this.health + " HP");
     }
 
-    public void addCardOnTable(Cards card) {
+    protected void addCardOnTable(Cards card) {
         this.cardsOnTable.add(card);
     }
 
@@ -199,7 +200,7 @@ public class Player {
         this.jailed = b;
     }
 
-    public boolean isJailed(){
+    protected boolean isJailed(){
         return this.jailed;
     }
 

@@ -3,7 +3,7 @@ package sk.stuba.fei.uim.oop.cards;
 import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Bang extends Cards {
@@ -12,7 +12,7 @@ public class Bang extends Cards {
     }
 
     @Override
-    public void effect(Player sourcePlayer, ArrayList<Player> allPlayers, Deck deck) {
+    public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
         Player target = sourcePlayer.selectPlayer(sourcePlayer, allPlayers);
         if (target.hasBarrel(target)) {
             Random random = new Random();
