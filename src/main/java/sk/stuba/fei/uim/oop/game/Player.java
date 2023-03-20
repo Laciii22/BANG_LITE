@@ -25,7 +25,7 @@ public class Player {
                 activePlayers++;
             }
         }
-        printAllCards(this);
+
         return activePlayers == 1;
     }
 
@@ -209,8 +209,4 @@ public class Player {
         return this.jailed;
     }
 
-    public void printAllCards(Player player){
-        System.out.println("cards in discard pile: " + deck.getDiscardPile().size());
-        System.out.println("cards in deck: " + deck.getDeck().size());
-    }
 }

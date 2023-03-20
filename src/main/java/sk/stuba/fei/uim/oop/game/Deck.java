@@ -3,7 +3,6 @@ package sk.stuba.fei.uim.oop.game;
 import sk.stuba.fei.uim.oop.cards.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
