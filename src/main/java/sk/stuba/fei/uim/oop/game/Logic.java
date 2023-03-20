@@ -25,10 +25,11 @@ public class Logic {
         this.deck = new Deck();
         for (int i = 0; i < numberPlayers; i++) {
             String name = ZKlavesnice.readString("Enter name of player " + (i + 1) + ": ");
-            Player player = new Player(name, deck);
+            Player player = new Player(name, deck, new Deck());
             players.add(player);
         }
         startGame();
+
     }
 
 
@@ -50,6 +51,7 @@ public class Logic {
 
     private void playerTurn() {
         Player currentPlayer = players.get(currentPlayerIndex);
+        //currentPlayer.printAllCadsInGame(currentPlayer);
         currentPlayer.checkForWinner(players);
         playCardsOnTable(currentPlayer, players);
         if (currentPlayer.isJailed()) {
@@ -117,7 +119,7 @@ public class Logic {
                     System.out.println("Invalid card index. Please select a valid card index.");
                 }
             }
-            currentPlayer.removeCard(cardIndex, deck);
+            currentPlayer.removeCardToPile(cardIndex);
         }
 
         currentPlayerIndex++;

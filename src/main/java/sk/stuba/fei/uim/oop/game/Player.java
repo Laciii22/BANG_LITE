@@ -4,6 +4,7 @@ import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -12,7 +13,8 @@ public class Player {
     private int health;
     private final List<Cards> hand;
     private final List<Cards> cardsOnTable = new ArrayList<>();
-    private final List<Cards> discardPile = new ArrayList<>();
+
+    private final Deck discardPile;
     private final Deck deck;
     private boolean jailed;
 
@@ -27,6 +29,7 @@ public class Player {
         if (activePlayers == 1) {
             System.out.println("The winner is " + this.name + "!");
             System.out.println("Game over");
+            printAllCadsInGame(this);
             System.exit(0);
         }
     }
@@ -43,11 +46,12 @@ public class Player {
         return hand;
     }
 
-    protected Player(String name, Deck gameDeck) {
+    protected Player(String name, Deck gameDeck, Deck discardPile) {
         this.hand = new ArrayList<>(4);
         this.name = name;
         this.health = 4;
         this.deck = gameDeck;
+        this.discardPile = discardPile;
         getCardFromDeck(Player.this, gameDeck, 4);
     }
 
@@ -97,20 +101,20 @@ public class Player {
         return false;
     }
 
-    public boolean hasBang(Player player, Deck deck) {
+    public boolean hasBang(Player player) {
         for (int i = 0; i < player.getHand().size(); i++) {
             if (player.getHand().get(i) instanceof Bang) {
-                player.removeCard(i, deck);
+                player.removeCardToPile(i);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean hasMissed(Player player, Deck deck) {
+    public boolean hasMissed(Player player) {
         for (int i = 0; i < player.getHand().size(); i++) {
             if (player.getHand().get(i) instanceof Missed) {
-                player.removeCard(i, deck);
+                player.removeCardToPile(i);
                 return true;
             }
         }
@@ -118,6 +122,11 @@ public class Player {
     }
 
     public void getCardFromDeck(Player player, Deck deck, int number) {
+        if (deck.getDeck().size() < number) {
+            deck.getDeck().addAll(deck.getDiscardPile());
+            deck.getDiscardPile().clear();
+            Collections.shuffle(deck.getDeck());
+        }
         for (int i = 0; i < number; i++) {
             Cards card = deck.getDeck().remove(0);
             player.getHand().add(card);
@@ -132,22 +141,24 @@ public class Player {
         this.cardsOnTable.remove(index);
     }
 
-    public void removeCard(int index, Deck deck) {
-        Cards removedCard = this.hand.remove(index);
-        deck.getDeck().add(deck.getDeck().size(), removedCard);
+    public void removeCardToPile(int index) {
+        Cards removedCard = this.hand.get(index);
+        this.hand.remove(removedCard);
+        deck.getDiscardPile().add(removedCard);
     }
 
-    public void removeCardFromTable(int index, Deck deck) {
-        Cards removedCard = this.cardsOnTable.remove(index );
-        deck.getDeck().add(deck.getDeck().size(), removedCard);
+    public void removeCardFromTableToPile(int index) {
+        Cards removedCard = this.cardsOnTable.get(index);
+        this.cardsOnTable.remove(removedCard);
+        deck.getDiscardPile().add(removedCard);
     }
 
-    private void removeCardsFromDeadPlayer(Player player, Deck deck) {
+    private void removeCardsFromDeadPlayer(Player player) {
         for (int i = player.getHand().size() - 1; i >= 0; i--) {
-            player.removeCard(i, deck);
+            player.removeCardToPile(i);
         }
         for (int i = player.getCardsOnTable().size() - 1; i >= 0; i--) {
-            player.removeCardFromTable(i, deck);
+            player.removeCardFromTableToPile(i);
         }
     }
     public boolean isActive() {
@@ -157,7 +168,7 @@ public class Player {
     protected boolean isDead( List<Player> players) {
         if (this.health <= 0) {
             System.out.println(this.getName() + " is dead!");
-            removeCardsFromDeadPlayer(this, this.getDeck());
+            removeCardsFromDeadPlayer(this);
             checkForWinner(players);
             return true;
         }
@@ -205,6 +216,12 @@ public class Player {
         return this.jailed;
     }
 
-
+    public void printAllCadsInGame(Player player) {
+        System.out.print("Deck size: " + player.getDeck().getDeck().size());
+        System.out.print("Discard pile size: " + player.getDeck().getDiscardPile().size());
+        for (int i = 0; i<player.deck.getDiscardPile().size(); i++){
+            System.out.print(player.deck.getDiscardPile().get(i).getClass().getSimpleName() + " ");
+        }
+    }
 
 }

@@ -16,7 +16,7 @@ public class Indians extends Cards {
         playersToAttack.remove(sourcePlayer);
         for (Player player : playersToAttack) {
             if(player.isActive()) {
-                if (player.hasBang(player, deck)) {
+                if (player.hasBang(player)) {
                     System.out.println("Player " + player.getName() + " has bang card and he shot an indian");
                 } else {
                     System.out.println("Player " + player.getName() + " was attacked by an indian");
@@ -24,7 +24,7 @@ public class Indians extends Cards {
                 }
             }
         }
-        sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);
+        sourcePlayer.removeCardToPile(sourcePlayer.getHand().indexOf(this));
     }
 }
 

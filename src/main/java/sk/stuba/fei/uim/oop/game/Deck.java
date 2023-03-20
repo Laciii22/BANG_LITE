@@ -3,11 +3,13 @@ package sk.stuba.fei.uim.oop.game;
 import sk.stuba.fei.uim.oop.cards.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class Deck {
     private final List<Cards> deck;
+    private final List<Cards> discardPile = new ArrayList<>();
     static final int BARREL = 2;
     static final int INDIANS = 2;
     static final int JAIL = 3;
@@ -15,12 +17,16 @@ public class Deck {
     static final int CATBALOU = 6;
     static final int BEER = 8;
     static final int MISSED = 15;
-    static final int DYNAMITE = 3;
+    static final int DYNAMITE = 5;
     static final int BANG = 30;
 
     public List<Cards> getDeck() {
         return deck;
     }
+    public List<Cards> getDiscardPile() {
+        return discardPile;
+    }
+
 
 
     public Deck(){
@@ -56,4 +62,5 @@ public class Deck {
         }
         Collections.shuffle(this.deck);
     }
+
 }

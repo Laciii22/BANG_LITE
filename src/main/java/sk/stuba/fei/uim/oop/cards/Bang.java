@@ -4,7 +4,6 @@ import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
 
 import java.util.List;
-import java.util.Random;
 
 public class Bang extends Cards {
     public Bang() {
@@ -18,20 +17,20 @@ public class Bang extends Cards {
             int chance = getRandom().nextInt(4);
             if (chance == 0) {
                 System.out.println(target.getName() + " has hidden behind a barrel and missed your bang!");
-                sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);
+                sourcePlayer.removeCardToPile(sourcePlayer.getHand().indexOf(this));
                 return;
             }
             else{
                 System.out.println(target.getName() + " couldn't hide behind a barrel");
             }
         }
-        if (target.hasMissed(target , target.getDeck())){
+        if (target.hasMissed(target)) {
             System.out.println(target.getName() + " has missed card and he missed your bang");
         }
         else{
             System.out.println(target.getName() + " was shot by " + sourcePlayer.getName());
             target.recieveDamage(allPlayers, 1);
         }
-        sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);
+        sourcePlayer.removeCardToPile(sourcePlayer.getHand().indexOf(this));
     }
 }
