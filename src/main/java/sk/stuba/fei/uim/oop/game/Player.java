@@ -12,6 +12,7 @@ public class Player {
     private int health;
     private final List<Cards> hand;
     private final List<Cards> cardsOnTable = new ArrayList<>();
+    private final List<Cards> discardPile = new ArrayList<>();
     private final Deck deck;
     private boolean jailed;
 
@@ -196,8 +197,8 @@ public class Player {
         this.cardsOnTable.add(card);
     }
 
-    public void setJailed(boolean b){
-        this.jailed = b;
+    public void setJailed(boolean jailed){
+        this.jailed = jailed;
     }
 
     protected boolean isJailed(){

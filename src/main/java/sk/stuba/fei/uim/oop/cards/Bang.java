@@ -15,8 +15,7 @@ public class Bang extends Cards {
     public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
         Player target = sourcePlayer.selectPlayer(sourcePlayer, allPlayers);
         if (target.hasBarrel(target)) {
-            Random random = new Random();
-            int chance = random.nextInt(4);
+            int chance = getRandom().nextInt(4);
             if (chance == 0) {
                 System.out.println(target.getName() + " has hidden behind a barrel and missed your bang!");
                 sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);

@@ -4,7 +4,6 @@ import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
 
 import java.util.List;
-import java.util.Random;
 
 public class Jail extends Cards{
     public Jail() {
@@ -13,8 +12,7 @@ public class Jail extends Cards{
 
     @Override
     public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
-        Random random = new Random();
-        int chance = random.nextInt(8);
+        int chance=getRandom().nextInt(4);
         if (chance == 0) {
             System.out.println(sourcePlayer.getName() + " is jailed");
             sourcePlayer.setJailed(true);

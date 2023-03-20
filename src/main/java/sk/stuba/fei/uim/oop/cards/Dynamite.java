@@ -4,7 +4,6 @@ import sk.stuba.fei.uim.oop.game.Deck;
 import sk.stuba.fei.uim.oop.game.Player;
 
 import java.util.List;
-import java.util.Random;
 
 public class Dynamite extends Cards {
 
@@ -15,8 +14,7 @@ public class Dynamite extends Cards {
 
     @Override
     public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
-        Random random = new Random();
-        int chance = random.nextInt(8);
+        int chance = getRandom().nextInt(8);
         if (chance == 0) {
             System.out.println("Dynamite exploded and you lost 3 health");
             sourcePlayer.removeCardFromTable(sourcePlayer.getCardsOnTable().indexOf(this), deck);

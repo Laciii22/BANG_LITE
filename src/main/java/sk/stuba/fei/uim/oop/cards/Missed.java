@@ -8,7 +8,7 @@ public class Missed extends Cards{
     public Missed() {
         super(Color.BROWN);
     }
-    public void effect(Player fromPlayer, ArrayList<Player> allPlayers, Deck deck) {
+    public void effect(Player sourcePlayer, ArrayList<Player> allPlayers, Deck deck) {
         System.out.println("You cannot use missed card");
     }
 }

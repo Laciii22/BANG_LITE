@@ -11,9 +11,9 @@ public class Indians extends Cards {
     }
 
     @Override
-    public void effect(Player fromPlayer, List<Player> allPlayers, Deck deck) {
+    public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
         List<Player> playersToAttack = new ArrayList<>(allPlayers);
-        playersToAttack.remove(fromPlayer);
+        playersToAttack.remove(sourcePlayer);
         for (Player player : playersToAttack) {
             if(player.isActive()) {
                 if (player.hasBang(player, deck)) {
@@ -24,7 +24,7 @@ public class Indians extends Cards {
                 }
             }
         }
-        fromPlayer.removeCard(fromPlayer.getHand().indexOf(this), deck);
+        sourcePlayer.removeCard(sourcePlayer.getHand().indexOf(this), deck);
     }
 }
 
