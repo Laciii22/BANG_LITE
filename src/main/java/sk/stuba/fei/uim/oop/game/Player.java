@@ -14,24 +14,19 @@ public class Player {
     private final List<Cards> hand;
     private final List<Cards> cardsOnTable = new ArrayList<>();
 
-    private final Deck discardPile;
     private final Deck deck;
     private boolean jailed;
 
 
-    protected void checkForWinner(List<Player> players) {
+    protected boolean checkForWinner(List<Player> players) {
         int activePlayers = 0;
         for (Player player : players) {
             if (player.isActive()) {
                 activePlayers++;
             }
         }
-        if (activePlayers == 1) {
-            System.out.println("The winner is " + this.name + "!");
-            System.out.println("Game over");
-            printAllCadsInGame(this);
-            System.exit(0);
-        }
+        printAllCards(this);
+        return activePlayers == 1;
     }
 
 
@@ -46,12 +41,11 @@ public class Player {
         return hand;
     }
 
-    protected Player(String name, Deck gameDeck, Deck discardPile) {
+    protected Player(String name, Deck gameDeck) {
         this.hand = new ArrayList<>(4);
         this.name = name;
         this.health = 4;
         this.deck = gameDeck;
-        this.discardPile = discardPile;
         getCardFromDeck(Player.this, gameDeck, 4);
     }
 
@@ -87,10 +81,10 @@ public class Player {
         return health;
     }
 
-    public void recieveDamage(List<Player> allPlayers,int damage) {
+    public void recieveDamage(int damage) {
         this.health -= damage;
         System.out.println("He has " + this.health + " HP");
-        isDead(allPlayers);
+        isDead();
     }
     public boolean hasBarrel(Player player) {
         for (int i = 0; i < player.getCardsOnTable().size(); i++) {
@@ -165,11 +159,10 @@ public class Player {
         return health > 0;
     }
 
-    protected boolean isDead( List<Player> players) {
+    protected boolean isDead() {
         if (this.health <= 0) {
             System.out.println(this.getName() + " is dead!");
             removeCardsFromDeadPlayer(this);
-            checkForWinner(players);
             return true;
         }
         return false;
@@ -216,12 +209,8 @@ public class Player {
         return this.jailed;
     }
 
-    public void printAllCadsInGame(Player player) {
-        System.out.print("Deck size: " + player.getDeck().getDeck().size());
-        System.out.print("Discard pile size: " + player.getDeck().getDiscardPile().size());
-        for (int i = 0; i<player.deck.getDiscardPile().size(); i++){
-            System.out.print(player.deck.getDiscardPile().get(i).getClass().getSimpleName() + " ");
-        }
+    public void printAllCards(Player player){
+        System.out.println("cards in discard pile: " + deck.getDiscardPile().size());
+        System.out.println("cards in deck: " + deck.getDeck().size());
     }
-
 }

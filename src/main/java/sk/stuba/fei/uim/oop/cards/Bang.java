@@ -29,7 +29,7 @@ public class Bang extends Cards {
         }
         else{
             System.out.println(target.getName() + " was shot by " + sourcePlayer.getName());
-            target.recieveDamage(allPlayers, 1);
+            target.recieveDamage(1);
         }
         sourcePlayer.removeCardToPile(sourcePlayer.getHand().indexOf(this));
     }

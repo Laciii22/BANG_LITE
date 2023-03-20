@@ -17,7 +17,7 @@ public class Deck {
     static final int CATBALOU = 6;
     static final int BEER = 8;
     static final int MISSED = 15;
-    static final int DYNAMITE = 5;
+    static final int DYNAMITE = 1;
     static final int BANG = 30;
 
     public List<Cards> getDeck() {

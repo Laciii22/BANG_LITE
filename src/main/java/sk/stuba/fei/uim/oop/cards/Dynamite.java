@@ -18,7 +18,7 @@ public class Dynamite extends Cards {
         if (chance == 0) {
             System.out.println("Dynamite exploded and you lost 3 health");
             sourcePlayer.removeCardFromTableToPile(sourcePlayer.getCardsOnTable().indexOf(this));
-            sourcePlayer.recieveDamage(allPlayers,3);
+            sourcePlayer.recieveDamage(3);
         } else {
             System.out.println("Dynamite didn't explode");
             int currentPlayerIndex = allPlayers.indexOf(sourcePlayer);

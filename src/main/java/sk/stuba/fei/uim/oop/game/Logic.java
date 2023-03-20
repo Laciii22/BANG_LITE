@@ -25,11 +25,10 @@ public class Logic {
         this.deck = new Deck();
         for (int i = 0; i < numberPlayers; i++) {
             String name = ZKlavesnice.readString("Enter name of player " + (i + 1) + ": ");
-            Player player = new Player(name, deck, new Deck());
+            Player player = new Player(name, deck);
             players.add(player);
         }
         startGame();
-
     }
 
 
@@ -41,9 +40,14 @@ public class Logic {
                 currentPlayerIndex = 0;
             }
             Player currentPlayer = players.get(currentPlayerIndex);
-            if (currentPlayer.isDead(players)) {
+            if (currentPlayer.isDead()) {
                 currentPlayerIndex++;
                 continue;
+            }
+            if (currentPlayer.checkForWinner(players)){
+                System.out.println("The winner is " + currentPlayer.getName() + "!");
+                System.out.println("Game over.");
+                break;
             }
             playerTurn();
         }
@@ -51,7 +55,6 @@ public class Logic {
 
     private void playerTurn() {
         Player currentPlayer = players.get(currentPlayerIndex);
-        //currentPlayer.printAllCadsInGame(currentPlayer);
         currentPlayer.checkForWinner(players);
         playCardsOnTable(currentPlayer, players);
         if (currentPlayer.isJailed()) {
@@ -71,6 +74,7 @@ public class Logic {
             if (currentPlayer.getHand().isEmpty()) {
                 break;
             }
+
             int cardIndex = -2;
             while (cardIndex < -1 || cardIndex >= currentPlayer.getHand().size()) {
                 cardIndex = ZKlavesnice.readInt("Select a card to play (0 to end turn): ") - 1;
@@ -104,6 +108,9 @@ public class Logic {
                     }
                 } else {
                     card.effect(currentPlayer, players, deck);
+                    if (currentPlayer.checkForWinner(players)) {
+                        return;
+                    }
                 }
                 currentPlayer.printCurrentPlayer(currentPlayer);
                 continuePlaying = playAgain();
@@ -128,18 +135,7 @@ public class Logic {
         }
     }
 
-    private boolean playAgain() {
-        String input = ZKlavesnice.readString("Do you want to play in this turn? (y/n) ");
-        if (input.equalsIgnoreCase("y")) {
-            return true;
-        } else if (input.equalsIgnoreCase("n")) {
 
-            return false;
-        } else {
-            System.out.println("Please enter y or n");
-            return playAgain();
-        }
-    }
 
     private boolean canPlayBlueCard(Player player, Cards card) {
         for (Cards tableCard : player.getCardsOnTable()) {
@@ -168,6 +164,19 @@ public class Logic {
             if (!(card instanceof Barrel)) {
                 card.effect(currentPlayer, players, deck);
             }
+        }
+    }
+
+    private boolean playAgain() {
+        String input = ZKlavesnice.readString("Do you want to play in this turn? (y/n) ");
+        if (input.equalsIgnoreCase("y")) {
+            return true;
+        } else if (input.equalsIgnoreCase("n")) {
+
+            return false;
+        } else {
+            System.out.println("Please enter y or n");
+            return playAgain();
         }
     }
 }
