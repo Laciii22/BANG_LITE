@@ -6,7 +6,6 @@ import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Logic {
     private final List<Player> players;
     private final Deck deck;
@@ -94,7 +93,7 @@ public class Logic {
                         System.out.println("You can't play this card. You already have this card on the table.");
                         continue;
                     }
-                    if (card instanceof Jail) {
+                    if (card instanceof Prison) {
                         Player targetPlayer = currentPlayer.selectPlayer(currentPlayer, players);
                         if (canPlayBlueCard(targetPlayer, card)) {
                             System.out.println("You can't play this card on this player. He already has a Jail card on the table.");

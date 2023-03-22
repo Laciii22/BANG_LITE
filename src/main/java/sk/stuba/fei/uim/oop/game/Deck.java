@@ -37,7 +37,7 @@ public class Deck {
             this.deck.add(new Indians());
         }
         for (int i = 0; i < JAIL; i++){
-            this.deck.add(new Jail());
+            this.deck.add(new Prison());
         }
 
         for (int i = 0; i < STAGECOACH; i++){
