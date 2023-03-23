@@ -94,7 +94,7 @@ public class Logic {
                         continue;
                     }
                     if (card instanceof Prison) {
-                        Player targetPlayer = currentPlayer.selectPlayer(currentPlayer, players);
+                        Player targetPlayer = card.selectPlayer(currentPlayer, players);
                         if (canPlayBlueCard(targetPlayer, card)) {
                             System.out.println("You can't play this card on this player. He already has a Jail card on the table.");
                             continue;

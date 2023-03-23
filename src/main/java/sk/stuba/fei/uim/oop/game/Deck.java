@@ -61,5 +61,4 @@ public class Deck {
         }
         Collections.shuffle(this.deck);
     }
-
 }
