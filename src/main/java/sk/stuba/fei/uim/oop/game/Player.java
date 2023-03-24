@@ -58,6 +58,10 @@ public class Player {
 
     public void getCardFromDeck(Player player, Deck deck, int number) {
         if (deck.getDeck().size() < number) {
+            if (deck.getDiscardPile().size() == 0) {
+                System.out.println("No more cards in deck");
+                return;
+            }
             deck.getDeck().addAll(deck.getDiscardPile());
             deck.getDiscardPile().clear();
             Collections.shuffle(deck.getDeck());
