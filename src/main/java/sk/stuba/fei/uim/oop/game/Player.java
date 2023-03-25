@@ -79,7 +79,6 @@ public class Player {
                 activePlayers++;
             }
         }
-
         return activePlayers == 1;
     }
 

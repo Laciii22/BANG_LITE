@@ -15,6 +15,7 @@ public class Bang extends Cards {
         Player target = this.selectPlayer(sourcePlayer, allPlayers);
         if (this.hasBarrel(target)) {
             int chance = getRandom().nextInt(4);
+            System.out.println("TUTU " + chance);
             if (chance == 0) {
                 System.out.println(target.getName() + " has hidden behind a barrel and missed your bang!");
                 sourcePlayer.removeCardToPile(sourcePlayer.getHand().indexOf(this));

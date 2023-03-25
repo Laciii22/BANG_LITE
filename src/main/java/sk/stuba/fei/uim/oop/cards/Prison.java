@@ -13,6 +13,7 @@ public class Prison extends Cards{
     @Override
     public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
         int chance=getRandom().nextInt(4);
+        System.out.println("TUTU " + chance);
         if (chance == 0) {
             System.out.println(sourcePlayer.getName() + " is in prison");
             sourcePlayer.setJailed(true);

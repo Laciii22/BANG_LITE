@@ -55,7 +55,9 @@ public class Logic {
     private void playerTurn() {
         Player currentPlayer = players.get(currentPlayerIndex);
         currentPlayer.checkForWinner(players);
-        playCardsOnTable(currentPlayer, players);
+        if (playCardsOnTable(currentPlayer, players)){
+            return;
+        }
         if (currentPlayer.isJailed()) {
             currentPlayer.setJailed(false);
             currentPlayerIndex++;
@@ -74,22 +76,9 @@ public class Logic {
                 System.out.println("You have no cards in your hand. You can't play any cards.");
                 break;
             }
-
             continuePlaying = playCard(currentPlayer, players, deck);
         } while (continuePlaying);
-
-        while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
-            currentPlayer.printCurrentPlayer(currentPlayer);
-            int cardIndex = -1;
-            while (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
-                cardIndex = ZKlavesnice.readInt("Select a card to discard: ") - 1;
-                if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
-                    System.out.println("Invalid card index. Please select a valid card index.");
-                }
-            }
-            currentPlayer.removeCardToPile(cardIndex);
-        }
-
+        discardCards(currentPlayer);
         currentPlayerIndex++;
         if (currentPlayerIndex >= players.size()) {
             currentPlayerIndex = 0;
@@ -121,12 +110,16 @@ public class Logic {
     }
 
     private boolean playCard(Player currentPlayer, List<Player> players, Deck deck) {
-        int cardIndex = ZKlavesnice.readInt("Enter the index of the card you want to play: ") - 1;
-        if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
-            System.out.println("Invalid input. Please try again.");
-            return true;
+        int cardIndex = -2;
+        while (cardIndex < -1 || cardIndex >= currentPlayer.getHand().size()) {
+            cardIndex = ZKlavesnice.readInt("Select a card to play (0 to end turn): ") - 1;
+            if (cardIndex == -1) {
+                return false;
+            }
+            if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
+                System.out.println("Invalid card index. Please select a valid card index.");
+            }
         }
-
         Cards card = currentPlayer.getHand().get(cardIndex);
         if (card.getColor() == Color.BLUE) {
             if (canPlayBlueCard(currentPlayer, card)) {
@@ -154,15 +147,31 @@ public class Logic {
         currentPlayer.printCurrentPlayer(currentPlayer);
         return playAgain();
     }
+    private void discardCards(Player currentPlayer) {
+        while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
+            currentPlayer.printCurrentPlayer(currentPlayer);
+            int cardIndex = -1;
+            while (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
+                cardIndex = ZKlavesnice.readInt("Select a card to discard: ") - 1;
+                if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
+                    System.out.println("Invalid card index. Please select a valid card index.");
+                }
+            }
+            currentPlayer.removeCardToPile(cardIndex);
+        }
+    }
 
-
-    private void playCardsOnTable(Player currentPlayer, List<Player> players) {
+    private boolean playCardsOnTable(Player currentPlayer, List<Player> players) {
         List<Cards> cardsOnTableInOrder = getCardsOnTableInOrder(currentPlayer);
         for (Cards card : cardsOnTableInOrder) {
             if (!(card instanceof Barrel)) {
                 card.effect(currentPlayer, players, deck);
+                if (currentPlayer.checkForWinner(players)) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     private boolean playAgain() {

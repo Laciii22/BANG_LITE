@@ -30,6 +30,7 @@ public class CatBalou extends Cards {
                     continue;
                 }
                 index = getRandom().nextInt(target.getHand().size());
+                System.out.println("TUTU " + index);
                 System.out.println("Discarding a card from " + target.getName() + "'s hand: " + target.getHand().get(index).getClass().getSimpleName());
                 target.removeCardToPile(index);
                 validChoice = true;
