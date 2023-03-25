@@ -14,7 +14,11 @@ public abstract class Cards {
 
     public Cards(Color color) {
         this.color = color;
-        this.random = new Random();
+        if (this instanceof Bang || this instanceof Dynamite || this instanceof Prison || this instanceof CatBalou){
+            this.random = new Random();
+        } else {
+            this.random = null;
+        }
     }
 
     public Color getColor() {

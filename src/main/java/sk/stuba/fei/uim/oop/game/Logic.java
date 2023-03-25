@@ -68,52 +68,14 @@ public class Logic {
 
         currentPlayer.printCurrentPlayer(currentPlayer);
 
-        boolean continuePlaying = true;
+        boolean continuePlaying;
         do {
             if (currentPlayer.getHand().isEmpty()) {
+                System.out.println("You have no cards in your hand. You can't play any cards.");
                 break;
             }
 
-            int cardIndex = -2;
-            while (cardIndex < -1 || cardIndex >= currentPlayer.getHand().size()) {
-                cardIndex = ZKlavesnice.readInt("Select a card to play (0 to end turn): ") - 1;
-                if (cardIndex == -1) {
-                    continuePlaying = false;
-                    break;
-                }
-                if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
-                    System.out.println("Invalid card index. Please select a valid card index.");
-                }
-            }
-
-            if (continuePlaying) {
-                Cards card = currentPlayer.getHand().get(cardIndex);
-                if (card.getColor() == Color.BLUE) {
-                    if (canPlayBlueCard(currentPlayer, card)) {
-                        System.out.println("You can't play this card. You already have this card on the table.");
-                        continue;
-                    }
-                    if (card instanceof Prison) {
-                        Player targetPlayer = card.selectPlayer(currentPlayer, players);
-                        if (canPlayBlueCard(targetPlayer, card)) {
-                            System.out.println("You can't play this card on this player. He already has a Jail card on the table.");
-                            continue;
-                        }
-                        currentPlayer.removeCard(cardIndex);
-                        targetPlayer.getCardsOnTable().add(card);
-                    } else {
-                        currentPlayer.addCardOnTable(card);
-                        currentPlayer.removeCard(cardIndex);
-                    }
-                } else {
-                    card.effect(currentPlayer, players, deck);
-                    if (currentPlayer.checkForWinner(players)) {
-                        return;
-                    }
-                }
-                currentPlayer.printCurrentPlayer(currentPlayer);
-                continuePlaying = playAgain();
-            }
+            continuePlaying = playCard(currentPlayer, players, deck);
         } while (continuePlaying);
 
         while (currentPlayer.getHand().size() > currentPlayer.getHealth()) {
@@ -133,6 +95,7 @@ public class Logic {
             currentPlayerIndex = 0;
         }
     }
+
 
 
 
@@ -156,6 +119,42 @@ public class Logic {
         }
         return cardsToAdd;
     }
+
+    private boolean playCard(Player currentPlayer, List<Player> players, Deck deck) {
+        int cardIndex = ZKlavesnice.readInt("Enter the index of the card you want to play: ") - 1;
+        if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
+            System.out.println("Invalid input. Please try again.");
+            return true;
+        }
+
+        Cards card = currentPlayer.getHand().get(cardIndex);
+        if (card.getColor() == Color.BLUE) {
+            if (canPlayBlueCard(currentPlayer, card)) {
+                System.out.println("You can't play this card. You already have this card on the table.");
+                return true;
+            }
+            if (card instanceof Prison) {
+                Player targetPlayer = card.selectPlayer(currentPlayer, players);
+                if (canPlayBlueCard(targetPlayer, card)) {
+                    System.out.println("You can't play this card on this player. He already has a Jail card on the table.");
+                    return true;
+                }
+                currentPlayer.removeCard(cardIndex);
+                targetPlayer.getCardsOnTable().add(card);
+            } else {
+                currentPlayer.addCardOnTable(card);
+                currentPlayer.removeCard(cardIndex);
+            }
+        } else {
+            card.effect(currentPlayer, players, deck);
+            if (currentPlayer.checkForWinner(players)) {
+                return false;
+            }
+        }
+        currentPlayer.printCurrentPlayer(currentPlayer);
+        return playAgain();
+    }
+
 
     private void playCardsOnTable(Player currentPlayer, List<Player> players) {
         List<Cards> cardsOnTableInOrder = getCardsOnTableInOrder(currentPlayer);
