@@ -9,14 +9,14 @@ import java.util.List;
 public class Deck {
     private final List<Cards> deck;
     private final List<Cards> discardPile = new ArrayList<>();
-    static final int BARREL = 10;
+    static final int BARREL = 2;
     static final int INDIANS = 2;
-    static final int JAIL = 10;
+    static final int JAIL = 3;
     static final int STAGECOACH = 4;
     static final int CATBALOU = 6;
     static final int BEER = 8;
     static final int MISSED = 15;
-    static final int DYNAMITE = 10;
+    static final int DYNAMITE = 1;
     static final int BANG = 30;
 
     public List<Cards> getDeck() {

@@ -72,14 +72,22 @@ public class Player {
         }
     }
 
-    protected boolean checkForWinner(List<Player> players) {
+    protected void checkForWinner(List<Player> players) {
         int activePlayers = 0;
         for (Player player : players) {
             if (player.isActive()) {
                 activePlayers++;
             }
         }
-        return activePlayers == 1;
+        if (activePlayers == 1) {
+            for (Player player : players) {
+                if (player.isActive()) {
+                    System.out.println(player.getName() + " has won the game!");
+                    System.out.println("Game over");
+                    System.exit(0);
+                }
+            }
+        }
     }
 
     protected void printCurrentPlayer(Player currentPlayer) {
@@ -105,10 +113,10 @@ public class Player {
         System.out.println();
     }
 
-    public void recieveDamage(int damage) {
+    public void recieveDamage(List<Player> allPlayers,int damage) {
         this.health -= damage;
         System.out.println("He has " + this.health + " HP");
-        isDead();
+        isDead(allPlayers);
     }
 
     public void removeCard(int index) {
@@ -143,10 +151,11 @@ public class Player {
         return health > 0;
     }
 
-    protected boolean isDead() {
+    protected boolean isDead( List<Player> players) {
         if (this.health <= 0) {
             System.out.println(this.getName() + " is dead!");
             removeCardsFromDeadPlayer(this);
+            checkForWinner(players);
             return true;
         }
         return false;

@@ -15,11 +15,10 @@ public class Dynamite extends Cards {
     @Override
     public void effect(Player sourcePlayer, List<Player> allPlayers, Deck deck) {
         int chance = getRandom().nextInt(8);
-        System.out.println("TUTU " + chance);
         if (chance == 0) {
             System.out.println("Dynamite exploded and player: " + sourcePlayer.getName() + " lost 3 health");
             sourcePlayer.removeCardFromTableToPile(sourcePlayer.getCardsOnTable().indexOf(this));
-            sourcePlayer.recieveDamage(3);
+            sourcePlayer.recieveDamage(allPlayers,3);
         } else {
             System.out.println("Dynamite didn't explode");
             int currentPlayerIndex = allPlayers.indexOf(sourcePlayer);

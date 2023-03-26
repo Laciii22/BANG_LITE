@@ -39,14 +39,9 @@ public class Logic {
                 currentPlayerIndex = 0;
             }
             Player currentPlayer = players.get(currentPlayerIndex);
-            if (currentPlayer.isDead()) {
+            if (currentPlayer.isDead(players)) {
                 currentPlayerIndex++;
                 continue;
-            }
-            if (currentPlayer.checkForWinner(players)){
-                System.out.println("The winner is " + currentPlayer.getName() + "!");
-                System.out.println("Game over.");
-                break;
             }
             playerTurn();
         }
@@ -140,9 +135,6 @@ public class Logic {
             }
         } else {
             card.effect(currentPlayer, players, deck);
-            if (currentPlayer.checkForWinner(players)) {
-                return false;
-            }
         }
         currentPlayer.printCurrentPlayer(currentPlayer);
         return playAgain();
@@ -166,9 +158,6 @@ public class Logic {
         for (Cards card : cardsOnTableInOrder) {
             if (!(card instanceof Barrel)) {
                 card.effect(currentPlayer, players, deck);
-                if (currentPlayer.checkForWinner(players)) {
-                    return true;
-                }
             }
         }
         return false;

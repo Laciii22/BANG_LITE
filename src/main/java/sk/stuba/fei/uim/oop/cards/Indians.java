@@ -20,7 +20,7 @@ public class Indians extends Cards {
                     System.out.println("Player " + player.getName() + " has bang card and he shot an indian");
                 } else {
                     System.out.println("Player " + player.getName() + " was attacked by an indian");
-                    player.recieveDamage(1);
+                    player.recieveDamage(allPlayers, 1);
                 }
             }
         }
