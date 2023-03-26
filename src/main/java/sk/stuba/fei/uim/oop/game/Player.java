@@ -56,6 +56,10 @@ public class Player {
         return this.jailed;
     }
 
+    public boolean isActive() {
+        return health > 0;
+    }
+
     public void getCardFromDeck(Player player, Deck deck, int number) {
         if (deck.getDeck().size() < number) {
             if (deck.getDiscardPile().size() == 0) {
@@ -146,9 +150,6 @@ public class Player {
         for (int i = player.getCardsOnTable().size() - 1; i >= 0; i--) {
             player.removeCardFromTableToPile(i);
         }
-    }
-    public boolean isActive() {
-        return health > 0;
     }
 
     protected boolean isDead( List<Player> players) {

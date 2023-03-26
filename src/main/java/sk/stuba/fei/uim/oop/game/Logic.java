@@ -80,9 +80,6 @@ public class Logic {
         }
     }
 
-
-
-
     private boolean canPlayBlueCard(Player player, Cards card) {
         for (Cards tableCard : player.getCardsOnTable()) {
             if (tableCard.getClass() == card.getClass()) {
