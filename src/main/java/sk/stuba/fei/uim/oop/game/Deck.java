@@ -26,8 +26,6 @@ public class Deck {
         return discardPile;
     }
 
-
-
     public Deck(){
         this.deck = new ArrayList<>();
         for (int i = 0; i < BARREL ; i++ ){
